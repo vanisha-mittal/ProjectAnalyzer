@@ -1,0 +1,127 @@
+/* Navbar custom styling */
+.custom-navbar {
+  background: linear-gradient(90deg, #000428, #004e92);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transition: background 0.3s ease-in-out;
+}
+
+.custom-navbar .navbar-brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease-in-out;
+}
+
+.custom-navbar .navbar-brand:hover {
+  color: #4fc3f7;
+}
+
+.brand-icon {
+  color: #4fc3f7;
+  font-size: 1.5rem;
+}
+
+.brand-text {
+  letter-spacing: 1px;
+}
+
+/* Navbar links */
+.nav-text {
+  color: #ddd !important;
+  font-size: 1rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-text:hover {
+  color: #4fc3f7 !important;
+  transform: translateY(-2px);
+}
+
+/* Signup/Register link */
+.register-link {
+  background: #4fc3f7;
+  color: #000 !important;
+  border-radius: 20px;
+  padding: 6px 16px !important;
+  margin-left: 10px;
+  transition: background 0.3s ease-in-out, transform 0.2s ease;
+}
+
+.register-link:hover {
+  background: #1e88e5;
+  color: #fff !important;
+  transform: scale(1.05);
+}
+
+/* Mobile toggle button */
+.navbar-toggler {
+  border: none;
+  outline: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* Greeting text */
+.nav-link span {
+  font-weight: 500;
+  color: #fff;
+}
+
+/* Responsive fixes */
+@media (max-width: 991px) {
+  .custom-navbar .navbar-collapse {
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .register-link {
+    margin-top: 10px;
+    text-align: center;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* Footer Styles */
+.footer-title {
+  background: linear-gradient(90deg, #4cc9f0, #4361ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-heading {
+  color: #90e0ef;
+  letter-spacing: 1px;
+}
+
+.footer-text {
+  color: #cbd5e1; /* soft grey-blue */
+  font-size: 14px;
+}
+
+.footer-link {
+  color: #adb5bd;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #4cc9f0; /* bright cyan on hover */
+}
+
+.footer-divider {
+  background: linear-gradient(90deg, #4361ee, #000000);
+  border: none;
+  height: 2px;
+}

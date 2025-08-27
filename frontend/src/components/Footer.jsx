@@ -5,9 +5,8 @@ import "./Navbar.css";
 const Footer = () => {
   return (
     <footer
-      className="pt-5 pb-4"
-      style={{ background: "linear-gradient(to right, #0d1b2a, #000000)" }}
-    >
+      className="pt-5 pb-4 footer"
+      >
       <div className="container">
         <div className="row">
           {/* Brand Info */}

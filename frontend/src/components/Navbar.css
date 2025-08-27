@@ -1,6 +1,7 @@
 /* Navbar custom styling */
 .custom-navbar {
-  background: linear-gradient(90deg, #000428, #004e92);
+  /* background: linear-gradient(90deg, #000428, #004e92); */
+  background-color: black;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   transition: background 0.3s ease-in-out;
 }
@@ -8,7 +9,7 @@
 .custom-navbar .navbar-brand {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #fff;
+  color: #4fc3f7;
   display: flex;
   align-items: center;
   transition: color 0.3s ease-in-out;
@@ -34,15 +35,12 @@
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.nav-text:hover {
-  color: #4fc3f7 !important;
-  transform: translateY(-2px);
-}
+
 
 /* Signup/Register link */
 .register-link {
   background: #4fc3f7;
-  color: #000 !important;
+  color: white ;
   border-radius: 20px;
   padding: 6px 16px !important;
   margin-left: 10px;
@@ -95,6 +93,9 @@
 
 
 /* Footer Styles */
+.footer{
+  background: #000;
+}
 .footer-title {
   background: linear-gradient(90deg, #4cc9f0, #4361ee);
   -webkit-background-clip: text;
@@ -121,7 +122,7 @@
 }
 
 .footer-divider {
-  background: linear-gradient(90deg, #4361ee, #000000);
+  background:#4361ee;
   border: none;
   height: 2px;
 }

@@ -50,12 +50,12 @@ function Navbar({ currentUser }) {
           <div className="navbar-nav ms-auto">
             {!currentUser ? (
               <>
-                <a href="/login" className="nav-link nav-text px-3 fw-semibold">
+                <a href="/login" className="nav-link register-link nav-text px-3 fw-semibold">
                   Login
                 </a>
                 <a
                   href="/signup"
-                  className="nav-link register-link px-3 fw-semibold"
+                  className="nav-link nav-text register-link px-3 fw-semibold"
                 >
                   Signup
                 </a>

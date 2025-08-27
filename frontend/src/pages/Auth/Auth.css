@@ -1,43 +1,205 @@
+/* Auth Container */
+
 .auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0f1f;
+  background-image: radial-gradient(circle at 20% 20%, rgba(0, 110, 255, 0.1), transparent 40%),
+                    radial-gradient(circle at 80% 80%, rgba(0, 110, 255, 0.08), transparent 40%);
+  padding: 80px 20px 40px;
+  box-sizing: border-box;
+}
+
+/* Card */
+.auth-card {
+  background: #111827;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  color: #fff;
+}
+
+/* Title */
+.auth-card h2 {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #4da6ff;
+}
+
+/* Tabs (Login / Register) */
+.auth-tabs {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 80vh; /* leaves space for navbar & footer */
-  background: #f5f5f5;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #2d3748;
 }
 
-.auth-card {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-  width: 320px;
-  text-align: center;
+.auth-tab {
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #cbd5e1;
+  transition: color 0.3s ease;
+  position: relative;
 }
 
-.auth-card h2 {
-  margin-bottom: 20px;
+.auth-tab.active {
+  color: #4da6ff;
+}
+
+.auth-tab.active::after {
+  content: "";
+  display: block;
+  height: 2px;
+  background: #4da6ff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+}
+
+/* Form */
+.auth-card form {
+  margin-top: 1rem;
+}
+
+.auth-card label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #cbd5e1;
 }
 
 .auth-card input {
-  display: block;
   width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 12px 14px;
+  margin-bottom: 1rem;
+  border: 1px solid #2d3748;
+  border-radius: 8px;
+  background: #1f2937;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
 }
 
-.auth-card button {
-  background: #000;
-  color: white;
+.auth-card input:focus {
+  border-color: #4da6ff;
+  box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.2);
+}
+
+/* Remember me + forgot */
+.auth-extra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.auth-extra a {
+  color: #4da6ff;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.auth-extra a:hover {
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.auth-card button[type="submit"] {
+  width: 100%;
+  padding: 12px;
   border: none;
-  padding: 12px;
-  width: 100%;
-  border-radius: 5px;
+  border-radius: 8px;
+  background: #4da6ff;
+  color: #fff;
+  font-weight: 600;
   cursor: pointer;
+  font-size: 15px;
+  transition: background 0.3s ease;
 }
 
-.auth-card button:hover {
-  background: #333;
+.auth-card button[type="submit"]:hover {
+  background: #1a75ff;
 }
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 1.5rem 0;
+  font-size: 14px;
+  color: #cbd5e1;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  height: 1px;
+  background: #2d3748;
+  top: 50%;
+  width: 40%;
+}
+
+.divider::before {
+  left: 0;
+}
+.divider::after {
+  right: 0;
+}
+
+/* Social Buttons */
+.social-login {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1f2937;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border: 1px solid #2d3748;
+}
+
+.social-btn:hover {
+  background: #2d3748;
+}
+
+/* Footer text */
+.auth-footer {
+  text-align: center;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.auth-footer a {
+  color: #4da6ff;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+
+/* //signup.jsx------------------------------------------------- */
+

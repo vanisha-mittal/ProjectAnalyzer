@@ -35,8 +35,17 @@ function Navbar({ currentUser }) {
               <a className="nav-link nav-text px-3" href="/dashboard">
                 Dashboard
               </a>
+    
             </li>
-
+            <li><a className="nav-link nav-text px-3" href="/UploadProject">
+                Uploads
+              </a>
+              </li>
+              <li>
+                 <a className="nav-link nav-text px-3" href="/Questions">
+               Questions
+              </a>
+              </li>
             {currentUser && currentUser.role === "admin" && (
               <li className="nav-item">
                 <a className="nav-link nav-text px-3" href="/admin">

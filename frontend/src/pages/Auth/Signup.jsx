@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Auth.css";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [name, setName] = useState("");
@@ -15,7 +16,7 @@ function Signup() {
     <div className="auth-container">
       <div className="auth-card">
         {/* Logo / Project Name */}
-        <h1>Project Analyzer</h1>
+        <h2><i class="fa-solid fa-chart-column"></i><br />Project Analyzer</h2>
 
         {/* Tabs */}
         {/* <div className="auth-tabs">
@@ -23,7 +24,13 @@ function Signup() {
           <button className="tab active">Register</button>
         </div> */}
 
-        <h2 className="welcome-text">Create an Account</h2>
+        <div className="auth-tabs">
+            <Link to="/login" className="auth-tab" >Login</Link>
+            <Link to="/signup" className="auth-tab" id="target">Register</Link>
+          </div>
+
+
+        <h5 style={{ textAlign: "center", marginBottom: "1rem" }}>Create An Account</h5>
 
         {/* Form */}
         <form className="auth-form" onSubmit={handleSubmit}>
@@ -78,20 +85,15 @@ function Signup() {
             <i className="fa-brands fa-github"></i>
           </a>
 
-          {/* Phone (just for demo, opens tel: link) */}
-          <a href="tel:+1234567890">
-            <i className="fa-solid fa-phone"></i>
-          </a>
-
           {/* LinkedIn */}
           <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
             <i className="fa-brands fa-linkedin"></i>
           </a>
         </div>
 
-        <p className="signup-text">
-          Already have an account? <a href="/login">Login</a>
-        </p>
+        <div className="auth-footer">
+          Already have an account? <a href="/signup">Login</a>
+        </div>
       </div>
     </div>
   );

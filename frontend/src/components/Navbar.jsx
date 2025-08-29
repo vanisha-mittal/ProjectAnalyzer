@@ -37,6 +37,13 @@ function Navbar({ currentUser }) {
               </a>
             </li>
 
+
+            <li className="nav-item">
+              <a className="nav-link nav-text px-3" href="/new">
+                New Project
+              </a>
+            </li>
+
             {currentUser && currentUser.role === "admin" && (
               <li className="nav-item">
                 <a className="nav-link nav-text px-3" href="/admin">

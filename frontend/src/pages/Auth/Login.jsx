@@ -6,19 +6,19 @@ function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Project Analyzer</h2>
+        <h2><i class="fa-solid fa-chart-column"></i><br />Project Analyzer</h2>
 
         {/* <div className="auth-tabs">
           <div className="auth-tab active">Login</div>
           <div className="auth-tab">Register</div>
         </div> */}
           <div className="auth-tabs">
-            <Link to="/login" className="auth-tab">Login</Link>
-            <Link to="/signup" className="auth-tab">Register</Link>
+            <Link to="/login" className="auth-tab" id="target">Login</Link>
+            <Link to="/signup" className="auth-tab" >Register</Link>
           </div>
 
 
-        <h3 style={{ textAlign: "center", marginBottom: "1rem" }}>Welcome Back</h3>
+        <h5 style={{ textAlign: "center", marginBottom: "1rem" }}>Welcome Back</h5>
 
         <form>
           <label>Email / Username</label>
@@ -27,12 +27,13 @@ function Login() {
           <label>Password</label>
           <input type="password" placeholder="Enter your password" required />
 
-         <div className="auth-extra">
-          <label className="remember-me">
+          <div className="auth-extra">
+           <label className="remember-me">
             <input type="checkbox" /> Remember me
-          </label>
-          <a href="/forgot-password">Forgot password?</a>
-        </div>
+           </label>
+           <a href="/forgot-password">Forgot password?</a>
+          </div>
+          <button type="submit">Login</button>
 
         </form>
 
@@ -50,9 +51,6 @@ function Login() {
           </a>
 
           {/* Phone (just for demo, opens tel: link) */}
-          <a href="tel:+1234567890">
-            <i className="fa-solid fa-phone"></i>
-          </a>
 
           {/* LinkedIn */}
           <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">

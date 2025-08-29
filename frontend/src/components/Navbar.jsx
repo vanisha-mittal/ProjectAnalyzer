@@ -35,6 +35,7 @@ function Navbar({ currentUser }) {
               <a className="nav-link nav-text px-3" href="/dashboard">
                 Dashboard
               </a>
+    
             </li>
 
 
@@ -43,6 +44,13 @@ function Navbar({ currentUser }) {
                 New Project
               </a>
             </li>
+
+
+              <li>
+                 <a className="nav-link nav-text px-3" href="/Questions">
+               Questions
+              </a>
+              </li>
 
             {currentUser && currentUser.role === "admin" && (
               <li className="nav-item">

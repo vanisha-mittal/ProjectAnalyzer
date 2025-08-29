@@ -1,35 +1,41 @@
 /* Auth Container */
 
 .auth-container {
+  padding-top: 70px;
+  padding-bottom: 10px;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0a0f1f;
-  background-image: radial-gradient(circle at 20% 20%, rgba(0, 110, 255, 0.1), transparent 40%),
-                    radial-gradient(circle at 80% 80%, rgba(0, 110, 255, 0.08), transparent 40%);
-  padding: 80px 20px 40px;
+  background: #111820;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px; /* size of each grid square */
+  background-position: center;
   box-sizing: border-box;
 }
 
 /* Card */
 .auth-card {
-  background: #111827;
+  background: #101322;
   border-radius: 12px;
+  border: 1px solid #444;
   padding: 2rem;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.6);
   color: #fff;
 }
 
 /* Title */
+
 .auth-card h2 {
   text-align: center;
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #4da6ff;
+  color: #fff;
 }
 
 /* Tabs (Login / Register) */
@@ -37,19 +43,24 @@
   display: flex;
   justify-content: center;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid #2d3748;
 }
 
 .auth-tab {
-  padding: 0.5rem 1.5rem;
+  padding: 1rem 4rem;
   cursor: pointer;
-  font-weight: 500;
-  color: #cbd5e1;
+  font-weight: lighter;
+  color: darkgrey;
   transition: color 0.3s ease;
   position: relative;
+  text-decoration: none;
 }
 
-.auth-tab.active {
+#target {
+  color: #3898d6;
+  border-bottom: 2px solid #3898d6;
+}
+
+/* .auth-tab.active {
   color: #4da6ff;
 }
 
@@ -62,7 +73,7 @@
   left: 0;
   right: 0;
   bottom: -1px;
-}
+} */
 
 /* Form */
 .auth-card form {
@@ -73,7 +84,7 @@
   display: block;
   font-size: 13px;
   margin-bottom: 6px;
-  color: #cbd5e1;
+  color: darkgray;
 }
 
 .auth-card input {
@@ -82,14 +93,14 @@
   margin-bottom: 1rem;
   border: 1px solid #2d3748;
   border-radius: 8px;
-  background: #1f2937;
+  background: #1a202c;
   color: #fff;
   font-size: 14px;
   outline: none;
 }
 
 .auth-card input:focus {
-  border-color: #4da6ff;
+  border-color: #3898d6;
   box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.2);
 }
 
@@ -104,7 +115,7 @@
 }
 
 .auth-extra a {
-  color: #4da6ff;
+  color: #3898d6;
   text-decoration: none;
   font-size: 13px;
 }
@@ -119,7 +130,7 @@
   padding: 12px;
   border: none;
   border-radius: 8px;
-  background: #4da6ff;
+  background: #3898d6;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
@@ -130,13 +141,28 @@
 .auth-card button[type="submit"]:hover {
   background: #1a75ff;
 }
+.remember-me {
+  display: flex;
+  align-items: center;  
+  gap: 6px;             
+  cursor: pointer;
+  line-height: 1;        
+}
+
+.remember-me input[type="checkbox"] {
+  margin: 0;             
+  width: 15px;
+  height: 15px;
+  accent-color: #3898d6; 
+}
+
 
 /* Divider */
 .divider {
   text-align: center;
   margin: 1.5rem 0;
   font-size: 14px;
-  color: #cbd5e1;
+  color: darkgrey;
   position: relative;
 }
 
@@ -192,14 +218,16 @@
 }
 
 .auth-footer a {
-  color: #4da6ff;
+  color: #3898d6;
   text-decoration: none;
 }
 
 .auth-footer a:hover {
   text-decoration: underline;
 }
-
+i{
+  color: #3898d6;
+}
 
 /* //signup.jsx------------------------------------------------- */
 

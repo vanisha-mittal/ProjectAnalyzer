@@ -44,8 +44,11 @@ function Navbar({ currentUser }) {
                 New Project
               </a>
             </li>
-
-
+            <li>
+                 <a className="nav-link nav-text px-3" href="/upload-project">
+               Upload Project
+              </a>
+              </li>
               <li>
                  <a className="nav-link nav-text px-3" href="/Questions">
                Questions

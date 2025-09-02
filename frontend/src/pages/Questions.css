@@ -1,7 +1,8 @@
 /* Layout */
 .questions-layout {
   display: flex;
-  background: #181a1b;
+  /* background: #1f2f37; */
+   background: #1e293b;
   color: #e0e0e0;
   min-height: 100vh;
 }
@@ -187,7 +188,8 @@
 }
 
 .card-actions button {
-  background: #2d2f33;
+  /* background: #2d2f33; */
+   background: #1e293b;
   border: 1px solid #444;
   color: #ddd;
   padding: 6px 10px;
@@ -221,4 +223,9 @@
 
 .pagination button:hover {
   background: #3a3d42;
+}
+
+
+.questions-layout {
+  margin-top: 50px;
 }

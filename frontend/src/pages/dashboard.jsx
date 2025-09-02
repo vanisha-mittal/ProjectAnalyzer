@@ -170,7 +170,7 @@ const dashboard = () => {
 
         {/* Action Buttons */}
         <div className="actions">
-          <Link to="/UploadProject" className="action-btn">📂 Upload Project</Link>
+          <Link to="/New" className="action-btn">📂 Upload Project</Link>
           <Link to="/Questions" className="action-btn">📝 Create Questions</Link>
         </div>
       </main>

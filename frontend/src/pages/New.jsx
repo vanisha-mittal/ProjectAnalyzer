@@ -91,24 +91,48 @@ export default function ProjectUpload() {
       </p>
 
       <div className="project-grid">
-        {/* Upload Project Files */}
-        <div className="upload-box">
-        <p><i class="fa-regular fa-file-zipper"></i> Upload Project Files</p>
-          <div className="drop-zone" onDrop={handleDrop} onDragOver={handleDragOver}>
-            {fileName ? (
-              <p className="file-selected"> File Selected: {fileName}</p>
-            ) : (
-              <>
-              <p><i class="fa-solid fa-cloud-arrow-up"></i></p>
-                <p> Drag and drop your project files here</p>
-                <p>or</p>
-                <label className="browse-label custom-btn">
-                  Browse Files
-                  <input type="file" onChange={handleFileUpload} style={{ display: "none" }} />
-                </label>
-              </>
-            )}
-          </div>
+  {/* Upload Project Files */}
+  <div className="upload-box">
+    <p>
+      <i className="fa-regular fa-file-zipper"></i> Upload Project Files
+    </p>
+    <div
+      className="drop-zone"
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+    >
+      {fileName ? (
+        <div className="file-selected">
+          <p>File Selected: {fileName}</p>
+          <label className="browse-label custom-btn">
+            Change File
+            <input
+              type="file"
+              onChange={handleFileUpload}
+              style={{ display: "none" }}
+            />
+          </label>
+        </div>
+      ) : (
+        <>
+          <p>
+            <i className="fa-solid fa-cloud-arrow-up"></i>
+          </p>
+          <p>Drag and drop your project files here</p>
+          <p>or</p>
+          <label className="browse-label custom-btn">
+            Browse Files
+            <input
+              type="file"
+              onChange={handleFileUpload}
+              style={{ display: "none" }}
+            />
+          </label>
+        </>
+      )}
+    </div>
+ 
+
 
           <div className="supported-formats">
             <p>Supported Formats</p>

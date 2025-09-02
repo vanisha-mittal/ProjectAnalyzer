@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Signup from "./pages/Auth/Signup";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/dashboard.jsx";
-import UploadProject from "./pages/UploadProject.jsx";
+import New from "./pages/New.jsx";
 import Questions from "./pages/Questions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -20,7 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/upload-project" element={<UploadProject />} />
+            <Route path="/New" element={<New />} />
             <Route path="/Questions" element={<Questions />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />

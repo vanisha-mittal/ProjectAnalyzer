@@ -2,31 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";  // <-- ADD THIS
 import "./dashboard.css";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-} from "recharts";
-
+import {BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,PieChart,Pie,Cell,Legend,} from "recharts";
 const dashboard = () => {
   // Dummy data (replace with DB later)
   const progressData = [
-    { day: "Mon", value: 70 },
-    { day: "Tue", value: 50 },
-    { day: "Wed", value: 75 },
-    { day: "Thu", value: 60 },
-    { day: "Fri", value: 80 },
-    { day: "Sat", value: 65 },
-    { day: "Sun", value: 40 },
-  ];
+    { day: "1", value: 70 },
+    { day: "2", value: 50 },
+    { day: "3", value: 75 },
+    { day: "4", value: 60 }];
 
   const difficultyData = [
     { name: "Hard", value: 25, color: "#ef4444" },
@@ -37,24 +20,6 @@ const dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <h2 className="sidebar-title">📊 Project Analyzer</h2>
-        <ul className="menu">
-          <li className="active">Dashboard</li>
-          <li>Projects</li>
-          <li>Questions</li>
-          <li>Feedback</li>
-         
-        </ul>
-        <div className="profile">
-          <div className="avatar">JD</div>
-          <div>
-            <p className="name">John Doe</p>
-            <p className="role">Senior Developer</p>
-          </div>
-        </div>
-      </aside>
 
       {/* Main */}
       <main className="main">
@@ -71,27 +36,22 @@ const dashboard = () => {
             <span className="positive">↑ 1.2% from last month</span>
           </div>
           <div className="stat-card">
-            <h2>156K</h2>
+            <h2>156</h2>
             <p>Analyzed Code</p>
             <span className="positive">↑ 8% from last week</span>
           </div>
-          {/* <div className="stat-card">
-            <h2>342</h2>
-            <p>Questions Answered</p>
-            <span className="positive">↑ 5% from yesterday</span>
-          </div> */}
-          {/* <div className="stat-card">
-            <h2>78%</h2>
-            <p>Skill Score</p>
+          <div className="stat-card">
+            <h2>10</h2>
+            <p>Skills Analyzed</p>
             <span className="positive">↑ 3% improvement</span>
-          </div> */}
+          </div>
         </div>
 
         {/* Charts */}
         <div className="charts">
           {/* Bar Chart */}
           <div className="chart-box">
-            <h3>Project Analysis Progress (Last 7 days)</h3>
+            <h3>Project Analysis Progress (Last 4 days)</h3>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={progressData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#334155" />

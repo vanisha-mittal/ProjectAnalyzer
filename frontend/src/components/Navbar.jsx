@@ -41,14 +41,10 @@ function Navbar({ currentUser }) {
 
             <li className="nav-item">
               <a className="nav-link nav-text px-3" href="/new">
-                New Project
+                Upload Project
               </a>
             </li>
-            <li>
-                 <a className="nav-link nav-text px-3" href="/upload-project">
-               Upload Project
-              </a>
-              </li>
+           
               <li>
                  <a className="nav-link nav-text px-3" href="/Questions">
                Questions

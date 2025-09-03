@@ -2,31 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./dashboard.css";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-} from "recharts";
 
-const Dashboard = () => {
-  // Dummy data
+import {BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,PieChart,Pie,Cell,Legend,} from "recharts";
+const dashboard = () => {
+  // Dummy data (replace with DB later)
   const progressData = [
-    { day: "Mon", value: 70, max: 100 },
-    { day: "Tue", value: 50, max: 100 },
-    { day: "Wed", value: 75, max: 100 },
-    { day: "Thu", value: 60, max: 100 },
-    { day: "Fri", value: 80, max: 100 },
-    { day: "Sat", value: 65, max: 100 },
-    { day: "Sun", value: 40, max: 100 }
-  ];
-
+    { day: "1", value: 70 },
+    { day: "2", value: 50 },
+    { day: "3", value: 75 },
+    { day: "4", value: 60 }];
+  
 
   const difficultyData = [
     { name: "Hard", value: 25, color: "#6366f1" },
@@ -36,7 +21,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container>
       {/* Sidebar */}
       <aside className="sidebar">
         <h2 className="sidebar-title">
@@ -72,9 +57,15 @@ const Dashboard = () => {
             <span className="positive">↑ 1.2% from last month</span>
           </div>
           <div className="stat-card">
-            <h2>156K</h2>
+            <h2>156</h2>
             <p>Analyzed Code</p>
             <span className="positive">↑ 8% from last week</span>
+          </div>
+
+          <div className="stat-card">
+            <h2>10</h2>
+            <p>Skills Analyzed</p>
+            <span className="positive">↑ 3% improvement</span>
           </div>
         </div>
 
@@ -82,10 +73,13 @@ const Dashboard = () => {
         <div className="charts">
           {/* Bar Chart */}
           <div className="chart-box">
+
             <div className="flex justify-between items-center mb-2">
               <h5>Project Analysis Progress</h5>
-              <span style={{fontWeight: 'lighter', color: '#aaa'}}>Last 7 days</span>
+              <span style={{fontWeight: 'lighter', color: '#aaa'}}>Last 4 days</span>
             </div>
+
+
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={progressData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
   <XAxis dataKey="day" stroke="#94a3b8" />

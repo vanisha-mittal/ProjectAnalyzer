@@ -27,10 +27,10 @@ It provides both frontend and backend functionality with AI-powered insights.
 ```
 
 ProjectAnalyzer/
+│-- frontend/       # Client-side code (React.js)-- backend/        # Server-side code (Node.js, Express.js, MongoDB)
 │-- backend/        # Server-side code (Node.js, Express.js, MongoDB)
-│-- frontend/       # Client-side code (React.js)
-│-- models/         # Database schemas
-│-- routes/         # API routes
+|-- │-- models/         # Database schemas
+|-- │-- routes/         # API routes
 │-- README.md       # Documentation
 
 ````

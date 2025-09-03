@@ -1,11 +1,14 @@
 /* General Layout */
 .dashboard-container {
   display: flex;
-  background-color: #0f1620;
+
+  background-color: #0f1620; 
+
   color: #f1f5f9;
   padding-top: 70px;
   min-height: 100vh;
 }
+
 
 /* Sidebar */
 .sidebar {
@@ -49,7 +52,6 @@
   border-left: 3px solid #3898d6;
 }
 
-/* Sidebar Profile */
 .profile {
   display: flex;
   align-items: center;      /* vertical alignment */
@@ -86,9 +88,11 @@
   color: #94a3b8;           /* subtle text */
 }
 
+
 /* Main Content */
 .main {
   flex: 1;
+  text-align: center;
   padding: 30px;
 }
 
@@ -225,7 +229,7 @@
 
 .recent-activity th {
   text-align: left;
-  padding: 10px 15px;
+  padding: 10px 20px;
   color: #94a3b8;
   font-weight: 600;
   font-size: 13px;
@@ -242,7 +246,6 @@
 .recent-activity tr td:last-child {
   font-weight: 600;
 }
-
 /* Status Badges */
 .status-completed {
   background-color: #1a2e2e;
@@ -272,3 +275,4 @@
 i {
   color: #3898d6;
 }
+

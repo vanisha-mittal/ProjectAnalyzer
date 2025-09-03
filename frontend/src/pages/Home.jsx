@@ -1,79 +1,127 @@
-// src/pages/Home.jsx
 import React from "react";
-import { Link } from "react-router-dom";
 
-const Home = () => {
+export default function ProjectAnalyzer() {
   return (
-    <div className="bg-black text-white min-h-screen flex flex-col">
-   
+    <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#0B1221", color: "#fff", margin: 0, padding: 0 }}>
+      {/* Navbar */}
+      <header style={{ backgroundColor: "#0F172A", padding: "15px 50px", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 4px 10px rgba(0,0,0,0.4)" }}>
+        <h2 style={{ color: "#60A5FA", margin: 0 }}>Project Analyzer</h2>
+        <nav>
+          <a href="#features" style={navLink}>Features</a>
+          <a href="#how" style={navLink}>How it works</a>
+          <a href="#pricing" style={navLink}>Pricing</a>
+          <a href="#contact" style={navLink}>Contact</a>
+          <button style={buttonPrimary}>Get Started</button>
+        </nav>
+      </header>
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center py-20 px-6 bg-gradient-to-r from-blue-900 via-black to-blue-950">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          Project Analyzer
+      <section style={{ textAlign: "center", padding: "100px 20px" }}>
+        <h1 style={{ fontSize: "44px", fontWeight: "bold", lineHeight: "1.4" }}>
+          Analyze <span style={gradientText}>Projects.</span><br />
+          Generate <span style={gradientText}>Questions.</span><br />
+          Ace <span style={gradientText}>Interviews.</span>
         </h1>
-        <p className="text-lg max-w-2xl mb-8 text-gray-300">
-          An AI-powered tool to analyze, question, and improve your projects.
-          Get instant insights, detect risks, and make smarter decisions with AI.
+        <p style={{ marginTop: "20px", color: "#94a3b8", maxWidth: "650px", margin: "20px auto", fontSize: "18px", lineHeight: "1.6" }}>
+          Project Analyzer helps students practice according to their project’s tech stack and allows interviewers to generate relevant questions tailored to specific roles and technologies.
         </p>
-        <div className="space-x-4">
-          <Link
-            to="/login"
-            className="bg-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-          >
-            Login
-          </Link>
-          <Link
-            to="/signup"
-            className="bg-blue-400 px-6 py-3 rounded-lg font-semibold hover:bg-blue-500 text-black transition"
-          >
-            Sign Up
-          </Link>
+        <button style={{ ...buttonPrimary, padding: "14px 30px", fontSize: "16px" }}>Try it Free</button>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" style={{ padding: "80px 20px", textAlign: "center" }}>
+        <h2 style={{ fontSize: "30px", marginBottom: "50px" }}>Powerful Features</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "35px", maxWidth: "1100px", margin: "0 auto" }}>
+          {[
+            {title: "Automated Project Analysis", desc: "AI scans your codebase to identify languages, frameworks, and generates instant practice questions." },
+            {title: "Dynamic Question Generation", desc: "Generate custom questions based on your project. No two quizzes are ever the same." },
+            {title: "Interview Mode Refresh", desc: "Timed sessions and instant scoring to simulate real interviews." },
+            {title: "Adaptive Questioning", desc: "Questions adapt in real-time based on your strengths and weaknesses." },
+            {title: "GitHub Integration", desc: "Connect directly to your GitHub repo to generate project-specific analysis." },
+            {title: "Role-Based Questioning", desc: "Tailor interview sets for developer, tester, or full-stack roles." }
+          ].map((f, i) => (
+            <div key={i} style={card}>
+              <h3 style={{ color: "#3b82f6", fontSize: "20px", margin: "15px 0" }}>{f.title}</h3>
+              <p style={{ color: "#94a3b8", lineHeight: "1.5" }}>{f.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="container mx-auto py-16 px-6">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          How Project Analyzer Works
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-blue-800 p-6 rounded-lg shadow-lg hover:bg-blue-700 transition">
-            <h3 className="text-xl font-semibold mb-4">1. Upload Project</h3>
-            <p className="text-gray-300">
-              Provide project details, documents, or goals for AI to analyze.
-            </p>
-          </div>
-          <div className="bg-blue-700 p-6 rounded-lg shadow-lg hover:bg-blue-600 transition">
-            <h3 className="text-xl font-semibold mb-4">2. AI Analysis</h3>
-            <p className="text-gray-300">
-              Our AI scans your project, identifies risks, and generates insights.
-            </p>
-          </div>
-          <div className="bg-blue-600 p-6 rounded-lg shadow-lg hover:bg-blue-500 transition">
-            <h3 className="text-xl font-semibold mb-4">3. Get Recommendations</h3>
-            <p className="text-gray-300">
-              Receive clear suggestions, project improvements, and answers to your questions.
-            </p>
-          </div>
+      <section id="how" style={{ padding: "90px 20px", textAlign: "center", backgroundColor: "#111827" }}>
+        <h2 style={{ fontSize: "30px", marginBottom: "50px" }}>How It Works</h2>
+        <div style={{ display: "flex", justifyContent: "center", gap: "60px", flexWrap: "wrap" }}>
+          {[
+            { step: "1", title: "Connect Your Project", desc: "Link your GitHub repository or upload project files for AI to analyze your tech stack." },
+            { step: "2", title: "Customize Questions", desc: "Select roles, difficulty levels, and technologies you want to focus on." },
+            { step: "3", title: "Practice & Improve", desc: "Answer project-specific questions, receive feedback, and track progress over time." }
+          ].map((s, i) => (
+            <div key={i} style={{ width: "280px", textAlign: "center" }}>
+              <div style={{ fontSize: "20px", fontWeight: "bold", color: "#fff", backgroundColor: "#2563eb", width: "55px", height: "55px", borderRadius: "50%", display: "flex", justifyContent: "center", alignItems: "center", margin: "0 auto 20px", boxShadow: "0 4px 10px rgba(0,0,0,0.3)" }}>
+                {s.step}
+              </div>
+              <h3 style={{ fontSize: "20px", marginBottom: "10px" }}>{s.title}</h3>
+              <p style={{ color: "#94a3b8", lineHeight: "1.5" }}>{s.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="text-center py-20 px-6 bg-gradient-to-r from-black via-blue-900 to-black">
-        <h2 className="text-3xl font-bold mb-6">
-          Ready to Analyze Your Project with AI?
-        </h2>
-        <Link
-          to="/dashboard"
-          className="bg-blue-500 px-8 py-3 rounded-lg font-semibold text-black hover:bg-blue-600 transition"
-        >
-          Go to Dashboard
-        </Link>
+      {/* CTA Section */}
+      <section style={{ backgroundColor: "#0F172A", padding: "80px 20px", textAlign: "center" }}>
+        <h2 style={{ fontSize: "28px", marginBottom: "20px" }}>Ready to Transform Your Interview Prep?</h2>
+        <p style={{ color: "#94a3b8", maxWidth: "650px", margin: "0 auto 30px", fontSize: "17px", lineHeight: "1.6" }}>
+          Join thousands of developers who are using Project Analyzer to level up their technical interview skills.
+        </p>
+        <button style={{ ...buttonPrimary, padding: "14px 30px", fontSize: "16px" }}>Start Free Trial</button>
       </section>
-
     </div>
   );
+}
+
+// Reusable styles
+const buttonPrimary = {
+  backgroundColor: "#2563eb",
+  color: "#fff",
+  padding: "10px 20px",
+  border: "none",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontWeight: "bold",
+  transition: "all 0.3s ease",
+};
+buttonPrimary[":hover"] = {
+  backgroundColor: "#1e40af"
 };
 
-export default Home;
+const navLink = {
+  margin: "0 15px",
+  color: "#cbd5e1",
+  textDecoration: "none",
+  fontSize: "15px",
+  position: "relative",
+};
+navLink[":hover"] = {
+  color: "#60A5FA",
+  textDecoration: "underline",
+};
+
+const gradientText = {
+  background: "linear-gradient(90deg, #3b82f6, #60a5fa)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+};
+
+const card = {
+  backgroundColor: "#1E293B",
+  padding: "25px",
+  borderRadius: "12px",
+  textAlign: "center",
+  transition: "all 0.3s ease",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+};
+card[":hover"] = {
+  transform: "translateY(-6px)",
+  boxShadow: "0 6px 15px rgba(0,0,0,0.4)",
+};

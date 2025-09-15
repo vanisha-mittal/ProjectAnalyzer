@@ -3,6 +3,10 @@ const express = require("express");
 const User = require("../models/User");
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  res.send("Users route working ");
+});
+
 //  Get a specific user profile with their projects
 router.get("/:id", async (req, res) => {
   try {

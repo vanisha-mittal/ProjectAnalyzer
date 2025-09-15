@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-// ✅ User schema (for signup/login)
+//  User schema (for signup/login)
 const userSchema = Joi.object({
   username: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
@@ -8,7 +8,7 @@ const userSchema = Joi.object({
   role: Joi.string().valid("user", "admin").default("user"),
 });
 
-// ✅ Project schema (when uploading project)
+//  Project schema (when uploading project)
 const projectSchema = Joi.object({
   title: Joi.string().required(),
   description: Joi.string().required(),
@@ -18,7 +18,7 @@ const projectSchema = Joi.object({
   uploadedBy: Joi.string().required(), // userId reference
 });
 
-// ✅ Review schema (project feedback)
+//  Review schema (project feedback)
 const reviewSchema = Joi.object({
   rating: Joi.number().min(0).max(5).required(),
   comment: Joi.string().required(),

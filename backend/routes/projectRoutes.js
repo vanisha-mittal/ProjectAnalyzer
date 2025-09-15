@@ -1,10 +1,10 @@
 // routes/projectRoutes.js
 const express = require("express");
 const Project = require("../models/Project");
-const { upload, validateGithubLink } = require("../utils/uploadFiles");
+const {  upload, validateGithubLink } = require("../utils/fileUpload");
 const router = express.Router();
 
-// ✅ GET all projects
+// GET all projects
 router.get("/", async (req, res) => {
   try {
     const projects = await Project.find({}).populate("author", "username email");
@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ GET project by ID
+// GET project by ID
 router.get("/:id", async (req, res) => {
   try {
     const project = await Project.findById(req.params.id).populate("author", "username email");
@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// ✅ CREATE project via GitHub link
+//  CREATE project via GitHub link
 router.post("/upload/github", async (req, res) => {
   try {
     const { projectName, githubLink, author } = req.body;
@@ -48,7 +48,7 @@ router.post("/upload/github", async (req, res) => {
   }
 });
 
-// ✅ CREATE project via ZIP file upload
+//  CREATE project via ZIP file upload
 router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
   try {
     const { projectName, author } = req.body;
@@ -71,7 +71,7 @@ router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
   }
 });
 
-// ✅ UPDATE project (e.g., ML model fills in tech stack & questions)
+//  UPDATE project (e.g., ML model fills in tech stack & questions)
 router.put("/:id", async (req, res) => {
   try {
     const { techStack, questions } = req.body;
@@ -90,7 +90,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// ✅ DELETE project
+//  DELETE project
 router.delete("/:id", async (req, res) => {
   try {
     const deletedProject = await Project.findByIdAndDelete(req.params.id);

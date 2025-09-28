@@ -3,6 +3,7 @@ import "./Auth.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+
 function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

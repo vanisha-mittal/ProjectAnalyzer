@@ -3,6 +3,7 @@ import "./Auth.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +19,10 @@ function Login() {
 
       console.log("Login success:", res.data);
       alert("Login successful!");
+      
+    // Store user in localStorage
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+
       // Redirect to projects page
       window.location.href = "/projects";
 

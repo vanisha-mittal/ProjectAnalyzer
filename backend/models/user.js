@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: "user", // you can change to "admin" if needed
+    default: "user",
   },
   gender: {
     type: String,
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   projectList: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Project", // connects to Project model
+      ref: "Project",
     },
   ],
 });
@@ -33,6 +33,4 @@ const userSchema = new mongoose.Schema({
 // Plugin for handling username + password
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+module.exports = mongoose.model("User", userSchema);

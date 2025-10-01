@@ -8,11 +8,16 @@ const projectSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+   
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // reference to User model
       required: true,
     },
+    // author: {
+    //   type: String,
+    //   required: true,
+    // },
     techStack: [
       {
         type: String, // filled by ML model
@@ -25,26 +30,26 @@ const projectSchema = new mongoose.Schema(
       },
     ],
 
-    // ✅ Source type: either "github" or "zip"
+    //  Source type: either "github" or "zip"
     sourceType: {
       type: String,
       enum: ["github", "zip"],
       required: true,
     },
 
-    // ✅ For GitHub uploads
+    //  For GitHub uploads
     githubLink: {
       type: String,
       trim: true,
     },
 
-    // ✅ For ZIP uploads
+    //  For ZIP uploads
     zipFilePath: {
       type: String, // stores local file path
       trim: true,
     },
 
-    // ✅ Optional deployed link
+    //  Optional deployed link
     deployedLink: {
       type: String,
       trim: true,

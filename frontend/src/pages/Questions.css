@@ -229,3 +229,53 @@
 .questions-layout {
   margin-top: 50px;
 }
+
+
+
+
+
+
+
+
+.sidebar {
+  width: 250px;
+  background-color: #1f2a44;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  height: 100vh;
+}
+
+.sidebar-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sidebar-techstack h4 {
+  margin-bottom: 10px;
+}
+
+.techstack-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tech-badge {
+  background-color: #2b3a5c;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+.sidebar-footer h4 {
+  margin-bottom: 5px;
+}

@@ -22,9 +22,12 @@ function Login() {
       
     // Store user in localStorage
     localStorage.setItem("user", JSON.stringify(res.data.user));
+localStorage.setItem("userId", res.data.user._id); // ← add this
+
+    // localStorage.setItem("user", JSON.stringify(res.data.user));
 
       // Redirect to projects page
-      window.location.href = "/projects";
+      window.location.href = "/dashboard";
 
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);

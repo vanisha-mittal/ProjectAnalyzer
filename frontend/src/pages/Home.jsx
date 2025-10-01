@@ -1,9 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ProjectAnalyzer() {
   return (
     <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#0B1221", color: "#fff", margin: 0, padding: 0 }}>
       {/* Navbar */}
+      
       <header style={{ backgroundColor: "#0F172A", padding: "15px 50px", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 4px 10px rgba(0,0,0,0.4)" }}>
         <h2 style={{ color: "#60A5FA", margin: 0 }}>Project Analyzer</h2>
         <nav>
@@ -14,7 +16,6 @@ export default function ProjectAnalyzer() {
           <button style={buttonPrimary}>Get Started</button>
         </nav>
       </header>
-
       {/* Hero Section */}
       <section style={{ textAlign: "center", padding: "100px 20px" }}>
         <h1 style={{ fontSize: "44px", fontWeight: "bold", lineHeight: "1.4" }}>
@@ -25,7 +26,9 @@ export default function ProjectAnalyzer() {
         <p style={{ marginTop: "20px", color: "#94a3b8", maxWidth: "650px", margin: "20px auto", fontSize: "18px", lineHeight: "1.6" }}>
           Project Analyzer helps students practice according to their project’s tech stack and allows interviewers to generate relevant questions tailored to specific roles and technologies.
         </p>
-        <button style={{ ...buttonPrimary, padding: "14px 30px", fontSize: "16px" }}>Try it Free</button>
+        {/* <button style={{ ...buttonPrimary, padding: "14px 30px", fontSize: "16px" }}>Try it Free</button> */}
+        <Link to="/New" style={{ ...buttonPrimary, display: "inline-block", textAlign: "center", padding: "14px 30px", fontSize: "16px", textDecoration: "none", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>Try It For Free</Link>
+     
       </section>
 
       {/* Features Section */}
@@ -67,14 +70,14 @@ export default function ProjectAnalyzer() {
           ))}
         </div>
       </section>
-
+      
       {/* CTA Section */}
       <section style={{ backgroundColor: "#0F172A", padding: "80px 20px", textAlign: "center" }}>
         <h2 style={{ fontSize: "28px", marginBottom: "20px" }}>Ready to Transform Your Interview Prep?</h2>
         <p style={{ color: "#94a3b8", maxWidth: "650px", margin: "0 auto 30px", fontSize: "17px", lineHeight: "1.6" }}>
           Join thousands of developers who are using Project Analyzer to level up their technical interview skills.
         </p>
-        <button style={{ ...buttonPrimary, padding: "14px 30px", fontSize: "16px" }}>Start Free Trial</button>
+       <Link to="/New" style={{ ...buttonPrimary, display: "inline-block", textAlign: "center", padding: "14px 30px", fontSize: "16px", textDecoration: "none", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>Start Free Trial</Link>
       </section>
     </div>
   );
@@ -125,3 +128,13 @@ card[":hover"] = {
   transform: "translateY(-6px)",
   boxShadow: "0 6px 15px rgba(0,0,0,0.4)",
 };
+
+
+
+
+
+
+
+
+
+

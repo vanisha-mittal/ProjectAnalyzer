@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Auth/Signup";
 import Login from "./pages/Auth/Login";
-import Dashboard from "./pages/Dashboard.jsx";
+import Dashboard from "./pages/dashboard.jsx";
 import New from "./pages/New.jsx";
 import Questions from "./pages/Questions";
 import 'bootstrap/dist/css/bootstrap.min.css';

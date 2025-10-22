@@ -8,10 +8,16 @@ export default function ProjectUpload() {
   const [repoUrl, setRepoUrl] = useState("");
   const [connectionStatus, setConnectionStatus] = useState("Not connected");
   const [connectionProgress, setConnectionProgress] = useState(0);
+  const [projectName, setProjectName] = useState("");
+  const [analysisStatus, setAnalysisStatus] = useState("");
 
-  //  Handle File Upload
+  // --- Handle File Upload ---
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
+    if (!projectName.trim()) {
+      alert("Please enter a project name before uploading.");
+      return;
+    }
     if (file) {
       setFileName(file.name);
       setFileSize(`0 MB / ${(file.size / (1024 * 1024)).toFixed(2)} MB`);
@@ -21,9 +27,9 @@ export default function ProjectUpload() {
 
   const uploadFile = (file) => {
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/projects"; // backend endpoint
+    const url = "http://localhost:8080/api/projects/upload/zip"; // ✅ backend endpoint
 
-    console.log(" Uploading file to backend:", url, "File:", file.name);
+    console.log("Uploading file to backend:", url, "File:", file.name);
 
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
@@ -36,49 +42,92 @@ export default function ProjectUpload() {
     };
 
     xhr.onload = () => {
-      console.log(" Backend responded with status:", xhr.status);
+      console.log("Backend responded with status:", xhr.status);
 
-      if (xhr.status === 200) {
+      if (xhr.status === 201) {
         const res = JSON.parse(xhr.responseText);
-        console.log("Upload complete! Backend response:", res);
+        console.log("✅ Upload complete:", res);
+        alert("Tech stack analysis complete! Check your console for results.");
       } else {
-        console.error("Upload failed.");
+        console.error("❌ Upload failed:", xhr.responseText);
+        alert("Upload failed. Check console for details.");
       }
     };
 
     xhr.onerror = () => {
-      console.error("Upload error.");
+      console.error("❌ Upload error.");
     };
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("projectZip", file); // ✅ must match multer field name
+    formData.append("projectName", projectName);
+    formData.append("author", "670f5e82d42a41255c20e12f"); // example author id
+
     xhr.open("POST", url, true);
     xhr.send(formData);
   };
 
-  //  Handle GitHub Connect
+  // --- Handle GitHub Connect ---
   const handleConnect = () => {
     if (repoUrl.trim()) {
       setConnectionStatus("Connecting...");
       setConnectionProgress(0);
 
-      fetch("http://localhost:8080/api/connect-repo", {
+      fetch("http://localhost:8080/api/projects/upload/github", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ repoUrl }),
+        body: JSON.stringify({
+          projectName,
+          githubLink: repoUrl,
+          author: "670f5e82d42a41255c20e12f",
+        }),
       })
         .then((res) => res.json())
         .then((data) => {
-          setConnectionStatus(data.message);
+          setConnectionStatus("Connected");
           setConnectionProgress(100);
-          console.log("GitHub connect response:", data); 
+          console.log("✅ GitHub link saved:", data);
         })
-        .catch(() => {
-          setConnectionStatus("Failed to connect");
-        });
+        .catch(() => setConnectionStatus("Failed to connect"));
+    } else {
+      alert("Please enter a GitHub repository URL.");
     }
   };
 
+  // --- Start Tech Stack Analysis ---
+  const handleStartAnalysis = async () => {
+    if (!repoUrl.trim()) {
+      alert("Please enter a GitHub repository URL first.");
+      return;
+    }
+
+    setAnalysisStatus("Analyzing...");
+    try {
+      const res = await fetch("http://localhost:8080/api/projects/analyze/github", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          githubLink: repoUrl,
+          projectName: projectName || "GitHub Project",
+          author: "670f5e82d42a41255c20e12f",
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setAnalysisStatus("Analysis complete ✅");
+        console.log("Analysis result:", data);
+      } else {
+        setAnalysisStatus("Analysis failed ❌");
+        console.error(data.error);
+      }
+    } catch (err) {
+      setAnalysisStatus("Error during analysis ❌");
+      console.error(err);
+    }
+  };
+
+  // --- Drag and Drop Handlers ---
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -134,6 +183,7 @@ export default function ProjectUpload() {
                   Browse Files
                   <input
                     type="file"
+                    accept=".zip"
                     onChange={handleFileUpload}
                     style={{ display: "none" }}
                   />
@@ -221,12 +271,15 @@ export default function ProjectUpload() {
 
       {/* Start Analysis */}
       <div className="analysis-container">
-        <button className="analysis-btn">Start Analysis</button>
+        <button className="analysis-btn" onClick={handleStartAnalysis}>
+          Start Analysis
+        </button>
       </div>
 
       <p className="analysis-note">
-        Analysis may take several minutes depending on the size and complexity
-        of your project
+        {analysisStatus
+          ? `Status: ${analysisStatus}`
+          : "Analysis may take several minutes depending on the size and complexity of your project"}
       </p>
     </div>
   );

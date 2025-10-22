@@ -1,0 +1,2 @@
+{"code": "public class Main { public static void main(String[] args){ System.out.println(\"Hi\"); } }", "language": "java"}
+{"code": "class A{ void test(){ int x = 5; } }", "language": "java"}

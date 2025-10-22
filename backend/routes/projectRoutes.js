@@ -1,9 +1,99 @@
-// routes/projectRoutes.js
 const express = require("express");
 const Project = require("../models/Project");
-const { upload, validateGithubLink } = require("../utils/fileUpload");
-const { runTechDetector } = require("../utils/runPython"); // NEW: helper to call Python
+const simpleGit = require("simple-git");
+const fs = require("fs");
+const path = require("path");
+const { runTechDetector } = require("../utils/runPython");
 const router = express.Router();
+
+// ==================== Analyze project from GitHub URL ====================
+router.post("/upload/github", async (req, res) => {
+  try {
+    const { githubLink, projectName, author } = req.body;
+
+    if (!githubLink || !projectName || !author) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // --- Create temp folder for cloning ---
+    const tmpDir = path.join(__dirname, "../uploads/temp", Date.now().toString());
+    fs.mkdirSync(tmpDir, { recursive: true });
+
+    console.log("🔗 Cloning repo:", githubLink);
+
+    const git = simpleGit();
+    await git.clone(githubLink, tmpDir);
+
+    console.log("✅ Repo cloned successfully");
+
+    // --- Run Python tech detector ---
+    const mlResult = await runTechDetector(tmpDir);
+    console.log("🧠 Tech Stack detected:", mlResult);
+
+    // --- Save in MongoDB ---
+    const newProject = new Project({
+      projectName,
+      author,
+      sourceType: "github",
+      githubLink,
+      techStack: mlResult.languages.concat(mlResult.frameworks, mlResult.tools),
+    });
+
+    await newProject.save();
+
+    // --- Cleanup ---
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+
+    res.status(201).json({
+      message: "GitHub project analyzed successfully",
+      project: newProject,
+    });
+  } catch (err) {
+    console.error("❌ Error analyzing GitHub repo:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// ==================== CREATE project via ZIP upload ====================
+router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
+  try {
+    const { projectName, author } = req.body;
+
+    if (!projectName || !author) {
+      return res.status(400).json({ error: "Project name and author are required" });
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: "No ZIP file uploaded" });
+    }
+
+    console.log("📦 Received ZIP file:", req.file.path);
+
+    // --- Run Python tech detector ---
+    const mlResult = await runTechDetector(req.file.path);
+    console.log("🧠 ML Detection Result:", mlResult);
+
+    const newProject = new Project({
+      projectName,
+      author,
+      sourceType: "zip",
+      zipFilePath: req.file.path,
+      techStack: mlResult.languages.concat(mlResult.frameworks, mlResult.tools),
+    });
+
+    await newProject.save();
+
+    res.status(201).json({
+      message: "Project uploaded & tech stack detected successfully",
+      project: newProject,
+    });
+  } catch (err) {
+    console.error("❌ Error in /upload/zip:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 
 // ==================== GET all projects ====================

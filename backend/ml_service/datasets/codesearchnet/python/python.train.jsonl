@@ -1,0 +1,3 @@
+{"code": "def add(a,b):\\n    return a+b", "language": "python"}
+{"code": "for i in range(10):\\n    print(i)", "language": "python"}
+{"code": "import flask\\napp = flask.Flask(__name__)", "language": "python"}

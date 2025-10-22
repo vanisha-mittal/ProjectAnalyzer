@@ -1,19 +1,21 @@
+// utils/runPython.js
 const { spawn } = require("child_process");
 const path = require("path");
 
-function runTechDetector(zipPath) {
+function runTechDetector(targetPath) {
   return new Promise((resolve, reject) => {
     const pythonProcess = spawn("python", [
       path.join(__dirname, "../ml/detector.py"),
-      zipPath,
+      targetPath,
     ]);
 
     let output = "";
+    let error = "";
+
     pythonProcess.stdout.on("data", (data) => {
       output += data.toString();
     });
 
-    let error = "";
     pythonProcess.stderr.on("data", (data) => {
       error += data.toString();
     });

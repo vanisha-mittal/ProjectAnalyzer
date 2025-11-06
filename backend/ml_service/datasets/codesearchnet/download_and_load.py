@@ -16,7 +16,7 @@ def authenticate_kaggle():
     kaggle_key = os.getenv("KAGGLE_KEY")
 
     if not kaggle_user or not kaggle_key:
-        raise ValueError("Kaggle credentials not found in .env")
+        raise ValueError("Kaggle credentials not found in .env") 
 
     # Set environment variables explicitly
     os.environ["KAGGLE_USERNAME"] = kaggle_user

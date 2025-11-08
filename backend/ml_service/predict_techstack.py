@@ -4,7 +4,6 @@ import joblib
 from utils import read_project
 
 # Optional auto-training import
-from datasets.load_codesearchnet_online import load_codesearchnet_online
 from train_language_model import train_language_model
 
 

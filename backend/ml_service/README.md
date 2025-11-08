@@ -18,7 +18,7 @@ fetch the full CodeSearchNet dataset.
 2. (Optional) Download full CodeSearchNet (large, ~20GB):
    ```powershell
    cd datasets\codesearchnet
-   python download_codesearchnet.py
+   python download_and_load.py
    ```
 
 3. Train language model:

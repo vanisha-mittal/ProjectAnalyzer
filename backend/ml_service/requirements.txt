@@ -1,3 +1,5 @@
 scikit-learn
 joblib
 datasets
+kaggle
+python-dotenv

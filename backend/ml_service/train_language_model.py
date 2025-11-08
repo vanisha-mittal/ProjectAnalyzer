@@ -63,7 +63,7 @@ def train_language_model(data_dir='./datasets/codesearchnet', max_samples=2000):
     joblib.dump(clf, os.path.join('models','lang_detector_csnet.pkl'))
     joblib.dump(vectorizer, os.path.join('models','vectorizers_lang_vectorizer.pkl'))
     joblib.dump(le, os.path.join('models','lang_label_encoder.pkl'))
-    print('✅ Saved language model and vectorizer to models/')
+    print('Saved language model and vectorizer to models/')
 
 
 if __name__ == "__main__":

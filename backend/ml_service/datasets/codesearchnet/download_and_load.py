@@ -1,92 +1,86 @@
-import os
-import zipfile
-from dotenv import load_dotenv
+import pandas as pd
+import random
 
-# Load environment variables from .env
-load_dotenv()  # load .env first
+tech_snippets = {
+    "React": [
+        "import React from 'react'; export default function App() { return <h1>Hello</h1>; }",
+        "import ReactDOM from 'react-dom/client'; import App from './App';",
+        "const [count, setCount] = useState(0);"
+    ],
+    "Angular": [
+        "import { Component } from '@angular/core'; @Component({ selector: 'app-root', templateUrl: './app.component.html' })",
+        "<router-outlet></router-outlet>",
+        "import { NgModule } from '@angular/core'; import { BrowserModule } from '@angular/platform-browser';"
+    ],
+    "Node.js": [
+        "const express = require('express'); const app = express(); app.listen(3000);",
+        "import express from 'express'; const app = express();",
+        "app.get('/', (req, res) => res.send('Hello World'));"
+    ],
+    "Django": [
+        "from django.shortcuts import render",
+        "from django.http import HttpResponse",
+        "class MyModel(models.Model): name = models.CharField(max_length=100)"
+    ],
+    "Flask": [
+        "from flask import Flask; app = Flask(__name__); app.run()",
+        "@app.route('/') def home(): return 'Flask app running'",
+        "from flask import jsonify"
+    ],
+    "Spring Boot": [
+        "@SpringBootApplication public class Application { public static void main(String[] args){ SpringApplication.run(Application.class, args); } }",
+        "import org.springframework.web.bind.annotation.*;",
+        "@RestController class HelloController { @GetMapping('/') String hi(){ return 'Hi'; } }"
+    ],
+    "Go": [
+        "package main; import 'fmt'; func main() { fmt.Println('Go!') }",
+        "import 'net/http'; func main() { http.ListenAndServe(':8080', nil) }"
+    ],
+    "Ruby on Rails": [
+        "class ApplicationController < ActionController::Base end",
+        "rails generate scaffold Post title:string body:text",
+        "def index; @posts = Post.all; end"
+    ],
+    "ASP.NET": [
+        "using Microsoft.AspNetCore.Mvc;",
+        "public class HomeController : Controller { public IActionResult Index() => View(); }",
+        "app.MapGet('/', () => 'Hello ASP.NET');"
+    ],
+    "Vue.js": [
+        "<template><div>{{ message }}</div></template><script>export default { data() { return { message: 'Hi Vue' }}}</script>",
+        "import { createApp } from 'vue'; createApp(App).mount('#app');",
+        "export default { name: 'App', components: {} }"
+    ]
+}
 
-def authenticate_kaggle():
-    """Authenticate Kaggle API using credentials from .env only."""
-    import os
-    from dotenv import load_dotenv
+extensions = {
+    "React": ".js",
+    "Angular": ".ts",
+    "Node.js": ".js",
+    "Django": ".py",
+    "Flask": ".py",
+    "Spring Boot": ".java",
+    "Go": ".go",
+    "Ruby on Rails": ".rb",
+    "ASP.NET": ".cs",
+    "Vue.js": ".vue"
+}
 
-    load_dotenv()  # make sure .env is loaded
+data = []
+id_counter = 1
 
-    kaggle_user = os.getenv("KAGGLE_USERNAME")
-    kaggle_key = os.getenv("KAGGLE_KEY")
+for _ in range(100):
+    stack = random.choice(list(tech_snippets.keys()))
+    content = random.choice(tech_snippets[stack])
+    data.append({
+        "id": id_counter,
+        "filename": f"file_{id_counter}{extensions[stack]}",
+        "file_extension": extensions[stack],
+        "file_content": content,
+        "tech_stack": stack
+    })
+    id_counter += 1
 
-    if not kaggle_user or not kaggle_key:
-        raise ValueError("Kaggle credentials not found in .env") 
-
-    # Set environment variables explicitly
-    os.environ["KAGGLE_USERNAME"] = kaggle_user
-    os.environ["KAGGLE_KEY"] = kaggle_key
-
-    # Import KaggleApi after env variables are set
-    from kaggle.api.kaggle_api_extended import KaggleApi
-    api = KaggleApi()
-    api.authenticate()
-    print("✅ Authenticated with Kaggle successfully.")
-    return api
-
-
-
-
-def download_kaggle_dataset(dataset_name, download_path="./datasets", unzip=True):
-    """
-    Download a Kaggle dataset programmatically.
-    Example: dataset_name = 'saurabhshahane/code-summarization-codesearchnet'
-    """
-    os.makedirs(download_path, exist_ok=True)
-    api = authenticate_kaggle()
-
-    print(f"⬇️ Downloading dataset: {dataset_name} ...")
-    api.dataset_download_files(dataset_name, path=download_path, unzip=False)
-    zip_path = os.path.join(download_path, f"{dataset_name.split('/')[-1]}.zip")
-
-    if unzip:
-        print("📦 Extracting files...")
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(download_path)
-        os.remove(zip_path)
-        print("✅ Extraction complete.")
-
-    print(f"✅ Dataset available at: {os.path.abspath(download_path)}")
-    return download_path
-
-
-def load_code_samples(local_path="./datasets", language="python", sample_size=300):
-    """
-    Load code samples from downloaded Kaggle dataset.
-    Filters by file extension (e.g. .py, .java, etc.)
-    """
-    samples = []
-    ext = {
-        "python": ".py",
-        "java": ".java",
-        "cpp": ".cpp",
-        "javascript": ".js"
-    }.get(language, ".py")
-
-    print(f"📂 Loading {language} code files from {local_path}...")
-    for root, _, files in os.walk(local_path):
-        for file in files:
-            if file.endswith(ext):
-                with open(os.path.join(root, file), "r", encoding="utf-8", errors="ignore") as f:
-                    code = f.read()
-                    if code.strip():
-                        samples.append(code)
-                        if len(samples) >= sample_size:
-                            print(f"✅ Loaded {len(samples)} {language} samples.")
-                            return samples
-    print(f"✅ Loaded {len(samples)} total samples.")
-    return samples
-
-
-if __name__ == "__main__":
-    dataset_name = "saurabhshahane/code-summarization-codesearchnet"
-    data_path = download_kaggle_dataset(dataset_name, download_path="./datasets/codesearchnet")
-    samples = load_code_samples(local_path=data_path, language="python", sample_size=300)
-
-    if samples:
-        print(f"\nExample code snippet:\n{'-'*40}\n{samples[0][:300]}\n...")
+df = pd.DataFrame(data)
+df.to_csv("techstack_dataset.csv", index=False)
+print("✅ Dataset saved as techstack_dataset.csv with", len(df), "rows.")

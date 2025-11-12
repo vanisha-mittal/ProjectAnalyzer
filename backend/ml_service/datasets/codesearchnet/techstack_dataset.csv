@@ -1,0 +1,101 @@
+id,filename,file_extension,file_content,tech_stack
+1,file_1.py,.py,from django.http import HttpResponse,Django
+2,file_2.ts,.ts,<router-outlet></router-outlet>,Angular
+3,file_3.py,.py,from flask import jsonify,Flask
+4,file_4.js,.js,"app.get('/', (req, res) => res.send('Hello World'));",Node.js
+5,file_5.js,.js,import express from 'express'; const app = express();,Node.js
+6,file_6.cs,.cs,public class HomeController : Controller { public IActionResult Index() => View(); },ASP.NET
+7,file_7.py,.py,@app.route('/') def home(): return 'Flask app running',Flask
+8,file_8.js,.js,import express from 'express'; const app = express();,Node.js
+9,file_9.java,.java,@RestController class HelloController { @GetMapping('/') String hi(){ return 'Hi'; } },Spring Boot
+10,file_10.cs,.cs,public class HomeController : Controller { public IActionResult Index() => View(); },ASP.NET
+11,file_11.js,.js,import React from 'react'; export default function App() { return <h1>Hello</h1>; },React
+12,file_12.py,.py,from flask import Flask; app = Flask(__name__); app.run(),Flask
+13,file_13.js,.js,const express = require('express'); const app = express(); app.listen(3000);,Node.js
+14,file_14.js,.js,const express = require('express'); const app = express(); app.listen(3000);,Node.js
+15,file_15.rb,.rb,def index; @posts = Post.all; end,Ruby on Rails
+16,file_16.vue,.vue,<template><div>{{ message }}</div></template><script>export default { data() { return { message: 'Hi Vue' }}}</script>,Vue.js
+17,file_17.vue,.vue,"export default { name: 'App', components: {} }",Vue.js
+18,file_18.ts,.ts,<router-outlet></router-outlet>,Angular
+19,file_19.js,.js,import ReactDOM from 'react-dom/client'; import App from './App';,React
+20,file_20.go,.go,"import 'net/http'; func main() { http.ListenAndServe(':8080', nil) }",Go
+21,file_21.rb,.rb,class ApplicationController < ActionController::Base end,Ruby on Rails
+22,file_22.vue,.vue,<template><div>{{ message }}</div></template><script>export default { data() { return { message: 'Hi Vue' }}}</script>,Vue.js
+23,file_23.js,.js,const express = require('express'); const app = express(); app.listen(3000);,Node.js
+24,file_24.rb,.rb,rails generate scaffold Post title:string body:text,Ruby on Rails
+25,file_25.ts,.ts,"import { Component } from '@angular/core'; @Component({ selector: 'app-root', templateUrl: './app.component.html' })",Angular
+26,file_26.cs,.cs,using Microsoft.AspNetCore.Mvc;,ASP.NET
+27,file_27.js,.js,import express from 'express'; const app = express();,Node.js
+28,file_28.py,.py,class MyModel(models.Model): name = models.CharField(max_length=100),Django
+29,file_29.js,.js,import React from 'react'; export default function App() { return <h1>Hello</h1>; },React
+30,file_30.ts,.ts,import { NgModule } from '@angular/core'; import { BrowserModule } from '@angular/platform-browser';,Angular
+31,file_31.go,.go,package main; import 'fmt'; func main() { fmt.Println('Go!') },Go
+32,file_32.vue,.vue,<template><div>{{ message }}</div></template><script>export default { data() { return { message: 'Hi Vue' }}}</script>,Vue.js
+33,file_33.rb,.rb,rails generate scaffold Post title:string body:text,Ruby on Rails
+34,file_34.py,.py,from flask import jsonify,Flask
+35,file_35.vue,.vue,"export default { name: 'App', components: {} }",Vue.js
+36,file_36.js,.js,"const [count, setCount] = useState(0);",React
+37,file_37.js,.js,import express from 'express'; const app = express();,Node.js
+38,file_38.cs,.cs,"app.MapGet('/', () => 'Hello ASP.NET');",ASP.NET
+39,file_39.py,.py,from flask import Flask; app = Flask(__name__); app.run(),Flask
+40,file_40.py,.py,from flask import Flask; app = Flask(__name__); app.run(),Flask
+41,file_41.go,.go,package main; import 'fmt'; func main() { fmt.Println('Go!') },Go
+42,file_42.go,.go,"import 'net/http'; func main() { http.ListenAndServe(':8080', nil) }",Go
+43,file_43.py,.py,@app.route('/') def home(): return 'Flask app running',Flask
+44,file_44.js,.js,import ReactDOM from 'react-dom/client'; import App from './App';,React
+45,file_45.py,.py,from django.http import HttpResponse,Django
+46,file_46.java,.java,"@SpringBootApplication public class Application { public static void main(String[] args){ SpringApplication.run(Application.class, args); } }",Spring Boot
+47,file_47.py,.py,class MyModel(models.Model): name = models.CharField(max_length=100),Django
+48,file_48.java,.java,"@SpringBootApplication public class Application { public static void main(String[] args){ SpringApplication.run(Application.class, args); } }",Spring Boot
+49,file_49.vue,.vue,import { createApp } from 'vue'; createApp(App).mount('#app');,Vue.js
+50,file_50.rb,.rb,rails generate scaffold Post title:string body:text,Ruby on Rails
+51,file_51.js,.js,import ReactDOM from 'react-dom/client'; import App from './App';,React
+52,file_52.java,.java,@RestController class HelloController { @GetMapping('/') String hi(){ return 'Hi'; } },Spring Boot
+53,file_53.py,.py,from flask import jsonify,Flask
+54,file_54.py,.py,class MyModel(models.Model): name = models.CharField(max_length=100),Django
+55,file_55.py,.py,@app.route('/') def home(): return 'Flask app running',Flask
+56,file_56.go,.go,"import 'net/http'; func main() { http.ListenAndServe(':8080', nil) }",Go
+57,file_57.vue,.vue,<template><div>{{ message }}</div></template><script>export default { data() { return { message: 'Hi Vue' }}}</script>,Vue.js
+58,file_58.go,.go,package main; import 'fmt'; func main() { fmt.Println('Go!') },Go
+59,file_59.java,.java,import org.springframework.web.bind.annotation.*;,Spring Boot
+60,file_60.java,.java,"@SpringBootApplication public class Application { public static void main(String[] args){ SpringApplication.run(Application.class, args); } }",Spring Boot
+61,file_61.rb,.rb,rails generate scaffold Post title:string body:text,Ruby on Rails
+62,file_62.rb,.rb,def index; @posts = Post.all; end,Ruby on Rails
+63,file_63.rb,.rb,rails generate scaffold Post title:string body:text,Ruby on Rails
+64,file_64.py,.py,from flask import Flask; app = Flask(__name__); app.run(),Flask
+65,file_65.java,.java,"@SpringBootApplication public class Application { public static void main(String[] args){ SpringApplication.run(Application.class, args); } }",Spring Boot
+66,file_66.js,.js,"app.get('/', (req, res) => res.send('Hello World'));",Node.js
+67,file_67.vue,.vue,"export default { name: 'App', components: {} }",Vue.js
+68,file_68.go,.go,package main; import 'fmt'; func main() { fmt.Println('Go!') },Go
+69,file_69.go,.go,package main; import 'fmt'; func main() { fmt.Println('Go!') },Go
+70,file_70.cs,.cs,using Microsoft.AspNetCore.Mvc;,ASP.NET
+71,file_71.go,.go,package main; import 'fmt'; func main() { fmt.Println('Go!') },Go
+72,file_72.py,.py,from flask import jsonify,Flask
+73,file_73.vue,.vue,import { createApp } from 'vue'; createApp(App).mount('#app');,Vue.js
+74,file_74.vue,.vue,import { createApp } from 'vue'; createApp(App).mount('#app');,Vue.js
+75,file_75.js,.js,import express from 'express'; const app = express();,Node.js
+76,file_76.java,.java,import org.springframework.web.bind.annotation.*;,Spring Boot
+77,file_77.java,.java,import org.springframework.web.bind.annotation.*;,Spring Boot
+78,file_78.py,.py,from django.http import HttpResponse,Django
+79,file_79.java,.java,@RestController class HelloController { @GetMapping('/') String hi(){ return 'Hi'; } },Spring Boot
+80,file_80.cs,.cs,using Microsoft.AspNetCore.Mvc;,ASP.NET
+81,file_81.go,.go,"import 'net/http'; func main() { http.ListenAndServe(':8080', nil) }",Go
+82,file_82.py,.py,from flask import Flask; app = Flask(__name__); app.run(),Flask
+83,file_83.js,.js,import express from 'express'; const app = express();,Node.js
+84,file_84.js,.js,"const [count, setCount] = useState(0);",React
+85,file_85.py,.py,from flask import jsonify,Flask
+86,file_86.js,.js,"app.get('/', (req, res) => res.send('Hello World'));",Node.js
+87,file_87.ts,.ts,import { NgModule } from '@angular/core'; import { BrowserModule } from '@angular/platform-browser';,Angular
+88,file_88.vue,.vue,import { createApp } from 'vue'; createApp(App).mount('#app');,Vue.js
+89,file_89.java,.java,@RestController class HelloController { @GetMapping('/') String hi(){ return 'Hi'; } },Spring Boot
+90,file_90.js,.js,import React from 'react'; export default function App() { return <h1>Hello</h1>; },React
+91,file_91.java,.java,"@SpringBootApplication public class Application { public static void main(String[] args){ SpringApplication.run(Application.class, args); } }",Spring Boot
+92,file_92.cs,.cs,public class HomeController : Controller { public IActionResult Index() => View(); },ASP.NET
+93,file_93.rb,.rb,class ApplicationController < ActionController::Base end,Ruby on Rails
+94,file_94.js,.js,import express from 'express'; const app = express();,Node.js
+95,file_95.js,.js,const express = require('express'); const app = express(); app.listen(3000);,Node.js
+96,file_96.vue,.vue,"export default { name: 'App', components: {} }",Vue.js
+97,file_97.ts,.ts,"import { Component } from '@angular/core'; @Component({ selector: 'app-root', templateUrl: './app.component.html' })",Angular
+98,file_98.py,.py,from django.http import HttpResponse,Django
+99,file_99.py,.py,from flask import Flask; app = Flask(__name__); app.run(),Flask
+100,file_100.js,.js,import express from 'express'; const app = express();,Node.js

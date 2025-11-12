@@ -1,70 +1,53 @@
-import os
-import json
-import joblib
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
+
+import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import classification_report
 
+# 1️⃣ Load dataset
+df = pd.read_csv("./datasets/codesearchnet/techstack_dataset.csv")
 
-def load_codesearchnet(data_dir, langs=None, max_per_lang=5000):
-    if langs is None:
-        langs = ['python', 'java', 'javascript']
-    texts, labels = [], []
+print("✅ Dataset loaded:", df.shape)
+print(df.head())
 
-    for lang in langs:
-        path = os.path.join(data_dir, lang, f"{lang}.train.jsonl")
-        if not os.path.exists(path):
-            print(f"[!] Missing: {path}, skipping")
-            continue
+# 2️⃣ Encode labels
+le = LabelEncoder()
+df["tech_stack_encoded"] = le.fit_transform(df["tech_stack"])
 
-        with open(path, 'r', encoding='utf-8') as f:
-            for i, line in enumerate(f):
-                if i >= max_per_lang:
-                    break
-                try:
-                    obj = json.loads(line)
-                    code = obj.get('code','').strip()
-                    if not code:
-                        continue
-                    texts.append(code)
-                    labels.append(lang.capitalize())
-                except Exception:
-                    continue
-    return texts, labels
+# 3️⃣ Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    df["file_content"], df["tech_stack_encoded"], test_size=0.2, random_state=42
+)
 
+# 4️⃣ Create pipeline: TF-IDF + Logistic Regression
+model = make_pipeline(
+    TfidfVectorizer(analyzer='char_wb', ngram_range=(3, 6), max_features=5000),
+    LogisticRegression(max_iter=200)
+)
 
-def train_language_model(data_dir='./datasets/codesearchnet', max_samples=2000):
-    texts, labels = load_codesearchnet(data_dir, max_per_lang=max_samples)
-    print(f"Loaded {len(texts)} samples for language training")
+# 5️⃣ Train model
+model.fit(X_train, y_train)
 
-    if len(texts) < 2:
-        print("Not enough data to train.")
-        return
+# 6️⃣ Evaluate
+y_pred = model.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+print("\n🎯 Accuracy:", round(acc * 100, 2), "%")
+print("\n📋 Classification Report:\n", classification_report(y_test, y_pred, target_names=le.classes_))
 
-    le = LabelEncoder()
-    y = le.fit_transform(labels)
+# 7️⃣ Try new predictions
+samples = [
+    "from flask import Flask; app = Flask(__name__)",
+    "import React from 'react'; function App() { return <div>Hi</div>; }",
+    "package main; import 'fmt'; func main() { fmt.Println('Go!') }",
+    "using Microsoft.AspNetCore.Mvc;"
+]
 
-    vectorizer = TfidfVectorizer(max_features=20000, token_pattern=r'\w+', lowercase=False)
-    X = vectorizer.fit_transform(texts)
+preds = model.predict(samples)
+decoded_preds = le.inverse_transform(preds)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, stratify=y if len(set(y))>1 else None, random_state=42
-    )
-
-    clf = RandomForestClassifier(n_estimators=200, random_state=42)
-    clf.fit(X_train, y_train)
-    y_pred = clf.predict(X_test)
-
-    print(classification_report(y_test, y_pred, target_names=le.classes_))
-
-    os.makedirs('models', exist_ok=True)
-    joblib.dump(clf, os.path.join('models','lang_detector_csnet.pkl'))
-    joblib.dump(vectorizer, os.path.join('models','vectorizers_lang_vectorizer.pkl'))
-    joblib.dump(le, os.path.join('models','lang_label_encoder.pkl'))
-    print('Saved language model and vectorizer to models/')
-
-
-if __name__ == "__main__":
-    train_language_model()
+print("\n🔮 Sample Predictions:")
+for text, pred in zip(samples, decoded_preds):
+    print(f" - {pred}: {text[:60]}...")

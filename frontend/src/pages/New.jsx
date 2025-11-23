@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import "./New.css";
 
 export default function ProjectUpload() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?._id;
+
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileSize, setFileSize] = useState("0 MB / 0 MB");
   const [fileName, setFileName] = useState("");
@@ -12,20 +15,22 @@ export default function ProjectUpload() {
   const [analysisStatus, setAnalysisStatus] = useState("");
 
   // --- Handle File Upload ---
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (!projectName.trim()) {
-      alert("Please enter a project name before uploading.");
-      return;
-    }
-    if (file) {
-      setFileName(file.name);
-      setFileSize(`0 MB / ${(file.size / (1024 * 1024)).toFixed(2)} MB`);
-      uploadFile(file);
-    }
-  };
+ const handleFileUpload = (e) => {
+  const file = e.target.files[0];
 
-  const uploadFile = (file) => {
+  if (file) {
+    const autoName = file.name.replace(".zip", "");
+
+    setProjectName(autoName);          // auto-set project name
+    setFileName(file.name);
+    setFileSize(`0 MB / ${(file.size / (1024 * 1024)).toFixed(2)} MB`);
+
+    uploadFile(file, autoName);        // pass project name
+  }
+};
+
+
+  const uploadFile = (file, autoName) => {
     const xhr = new XMLHttpRequest();
     const url = "http://localhost:8080/api/projects/upload/zip"; // ✅ backend endpoint
 
@@ -60,10 +65,11 @@ export default function ProjectUpload() {
 
     const formData = new FormData();
     formData.append("projectZip", file); // ✅ must match multer field name
-    formData.append("projectName", projectName);
-    formData.append("author", "670f5e82d42a41255c20e12f"); // example author id
+    formData.append("projectName", autoName);
+    formData.append("author", userId);
 
     xhr.open("POST", url, true);
+    xhr.withCredentials = true;
     xhr.send(formData);
   };
 

@@ -1,2 +1,0 @@
-{"code": "function add(a,b){return a+b;}", "language": "javascript"}
-{"code": "console.log('Hello JS');", "language": "javascript"}

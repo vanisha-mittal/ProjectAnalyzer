@@ -1,105 +1,97 @@
+// backend/routes/projectRoutes.js
 const express = require("express");
-const Project = require("../models/Project");
-const simpleGit = require("simple-git");
-const fs = require("fs");
-const path = require("path");
-const { runTechDetector } = require("../utils/runPython");
 const router = express.Router();
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+const AdmZip = require("adm-zip");
+const axios = require("axios");
+const Project = require("../models/Project");
+// const User= require("../models/User");
 
-// ==================== Analyze project from GitHub URL ====================
-router.post("/upload/github", async (req, res) => {
-  try {
-    const { githubLink, projectName, author } = req.body;
+// === MULTER SETUP ===
+const upload = multer({ dest: "uploads/" });
 
-    if (!githubLink || !projectName || !author) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    // --- Create temp folder for cloning ---
-    const tmpDir = path.join(__dirname, "../uploads/temp", Date.now().toString());
-    fs.mkdirSync(tmpDir, { recursive: true });
-
-    console.log("🔗 Cloning repo:", githubLink);
-
-    const git = simpleGit();
-    await git.clone(githubLink, tmpDir);
-
-    console.log("✅ Repo cloned successfully");
-
-    // --- Run Python tech detector ---
-    const mlResult = await runTechDetector(tmpDir);
-    console.log("🧠 Tech Stack detected:", mlResult);
-
-    // --- Save in MongoDB ---
-    const newProject = new Project({
-      projectName,
-      author,
-      sourceType: "github",
-      githubLink,
-      techStack: mlResult.languages.concat(mlResult.frameworks, mlResult.tools),
-    });
-
-    await newProject.save();
-
-    // --- Cleanup ---
-    fs.rmSync(tmpDir, { recursive: true, force: true });
-
-    res.status(201).json({
-      message: "GitHub project analyzed successfully",
-      project: newProject,
-    });
-  } catch (err) {
-    console.error("❌ Error analyzing GitHub repo:", err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-
-// ==================== CREATE project via ZIP upload ====================
+// ===================== ZIP UPLOAD + ML ANALYSIS =====================
 router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
   try {
-    const { projectName, author } = req.body;
+    const uploadedZip = req.file;
 
-    if (!projectName || !author) {
-      return res.status(400).json({ error: "Project name and author are required" });
-    }
-    if (!req.file) {
+    if (!uploadedZip)
       return res.status(400).json({ error: "No ZIP file uploaded" });
+    const { projectName } = req.body;
+
+    if (!req.user) {
+      return res.status(401).json({ error: "User not logged in" });
     }
 
-    console.log("📦 Received ZIP file:", req.file.path);
+    const author = req.user._id;
 
-    // --- Run Python tech detector ---
-    const mlResult = await runTechDetector(req.file.path);
-    console.log("🧠 ML Detection Result:", mlResult);
+    if (!projectName) {
+      return res.status(400).json({ error: "Project name required" });
+    }
 
-    const newProject = new Project({
+
+    console.log("📦 ZIP received:", uploadedZip.path);
+
+    // 1. Extract ZIP
+    const extractTo = path.join(
+      __dirname,
+      "..",
+      "uploads",
+      `${Date.now()}_${projectName}`
+    );
+
+    fs.mkdirSync(extractTo, { recursive: true });
+
+    const zip = new AdmZip(uploadedZip.path);
+    zip.extractAllTo(extractTo, true);
+
+    fs.unlinkSync(uploadedZip.path); // remove original .zip
+
+    console.log("🗂 ZIP extracted to:", extractTo);
+
+    // 2. Call FLASK ML API
+    const flaskResult = await axios.post("http://localhost:5000/predict/path", {
+      projectPath: extractTo,
+    });
+
+    const techstack = flaskResult.data.techstack;
+
+    console.log("🧠 ML Tech Stack:", techstack);
+
+    // 3. Save project in MongoDB
+    const newProject = await Project.create({
       projectName,
       author,
       sourceType: "zip",
-      zipFilePath: req.file.path,
-      techStack: mlResult.languages.concat(mlResult.frameworks, mlResult.tools),
+      zipFilePath: extractTo,
+      techStack: techstack,
     });
+    const User = require("../models/userSchema");
 
-    await newProject.save();
+    await User.findByIdAndUpdate(
+      author,
+      { $push: { projectList: newProject._id } },
+      { new: true }
+    );
 
-    res.status(201).json({
-      message: "Project uploaded & tech stack detected successfully",
+
+    return res.status(201).json({
+      message: "ZIP uploaded, extracted, and ML analysis done",
       project: newProject,
     });
   } catch (err) {
-    console.error("❌ Error in /upload/zip:", err);
-    res.status(500).json({ error: err.message });
+    console.error("❌ ZIP Upload Error:", err);
+    return res.status(500).json({ error: "ZIP upload or ML failed" });
   }
 });
 
 
-
-
-// ==================== GET all projects ====================
+// ===================== GET ALL PROJECTS =====================
 router.get("/", async (req, res) => {
   try {
-    const projects = await Project.find({}).populate("author", "username email");
+    const projects = await Project.find().populate("author", "username email");
     res.json(projects);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -107,87 +99,24 @@ router.get("/", async (req, res) => {
 });
 
 
-// ==================== GET project by ID ====================
+// ===================== GET PROJECT BY ID =====================
 router.get("/:id", async (req, res) => {
   try {
-    const project = await Project.findById(req.params.id).populate("author", "username email");
-    if (!project) return res.status(404).json({ message: "Project not found" });
+    const project = await Project.findById(req.params.id).populate(
+      "author",
+      "username email"
+    );
+
+    if (!project) return res.status(404).json({ error: "Project not found" });
+
     res.json(project);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ==================== CREATE project via GitHub link ====================
-router.post("/upload/github", async (req, res) => {
-  try {
-    const { projectName, githubLink, author } = req.body;
 
-    if (!projectName || !githubLink || !author) {
-      return res.status(400).json({ error: "Project name, GitHub link, and author are required" });
-    }
-
-    if (!validateGithubLink(githubLink)) {
-      return res.status(400).json({ error: "Invalid GitHub link" });
-    }
-
-    const newProject = new Project({
-      projectName,
-      author,
-      githubLink,
-      sourceType: "github",
-    });
-
-    await newProject.save();
-    res.status(201).json(newProject);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// ==================== CREATE project via ZIP file upload ====================
-router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
-  try {
-    const { projectName, author } = req.body;
-
-    if (!projectName || !author) {
-      return res.status(400).json({ error: "Project name and author are required" });
-    }
-
-    if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
-    }
-
-    // Step 1: Run ML detector on the uploaded zip
-    const mlResult = await runTechDetector(req.file.path);
-
-    if (mlResult.error) {
-      return res.status(500).json({ error: mlResult.error });
-    }
-
-    // Step 2: Save project with tech stack
-    const newProject = new Project({
-      projectName,
-      author,
-      zipFilePath: req.file.path,
-      sourceType: "zip",
-      techStack: mlResult.tech_stack || [],
-      questions: mlResult.questions || [], // later you can add questions generation in Python
-    });
-
-    await newProject.save();
-
-    res.status(201).json({
-      message: "Project uploaded and processed successfully",
-      project: newProject,
-    });
-  } catch (err) {
-    console.error("Error in /upload/zip:", err);
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// ==================== UPDATE project ====================
+// ===================== UPDATE PROJECT (OPTIONAL) =====================
 router.put("/:id", async (req, res) => {
   try {
     const { techStack, questions } = req.body;
@@ -198,7 +127,8 @@ router.put("/:id", async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    if (!updatedProject) return res.status(404).json({ message: "Project not found" });
+    if (!updatedProject)
+      return res.status(404).json({ error: "Project not found" });
 
     res.json(updatedProject);
   } catch (err) {
@@ -206,11 +136,14 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// ==================== DELETE project ====================
+
+// ===================== DELETE PROJECT =====================
 router.delete("/:id", async (req, res) => {
   try {
     const deletedProject = await Project.findByIdAndDelete(req.params.id);
-    if (!deletedProject) return res.status(404).json({ message: "Project not found" });
+
+    if (!deletedProject)
+      return res.status(404).json({ error: "Project not found" });
 
     res.json({ message: "Project deleted successfully" });
   } catch (err) {
@@ -219,123 +152,3 @@ router.delete("/:id", async (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
-
-
-
-// // routes/projectRoutes.js
-// const express = require("express");
-// const Project = require("../models/Project");
-// const { upload, validateGithubLink } = require("../utils/fileUpload"); //correct path as per your setup
-// const router = express.Router();
-
-// // GET all projects
-// router.get("/", async (req, res) => {
-//   try {
-//     const projects = await Project.find({}).populate("author", "username email");
-//     res.json(projects);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-// // GET project by ID
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const project = await Project.findById(req.params.id).populate("author", "username email");
-//     if (!project) return res.status(404).json({ message: "Project not found" });
-//     res.json(project);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-// // CREATE project via GitHub link
-// router.post("/upload/github", async (req, res) => {
-//   try {
-//     const { projectName, githubLink, author } = req.body;
-
-//     if (!projectName || !githubLink || !author) {
-//       return res.status(400).json({ error: "Project name, GitHub link, and author are required" });
-//     }
-
-//     if (!validateGithubLink(githubLink)) {
-//       return res.status(400).json({ error: "Invalid GitHub link" });
-//     }
-
-//     const newProject = new Project({
-//       projectName,
-//       author,
-//       githubLink,
-//       sourceType: "github",
-//     });
-
-//     await newProject.save();
-//     res.status(201).json(newProject);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-// // CREATE project via ZIP file upload
-// router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
-//   try {
-//     const { projectName, author } = req.body;
-
-//     if (!projectName || !author) {
-//       return res.status(400).json({ error: "Project name and author are required" });
-//     }
-
-//     if (!req.file) {
-//       return res.status(400).json({ error: "No file uploaded" });
-//     }
-
-//     const newProject = new Project({
-//       projectName,
-//       author,
-//       zipFilePath: req.file.path,
-//       sourceType: "zip",
-//     });
-
-//     await newProject.save();
-//     res.status(201).json(newProject);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-// // UPDATE project (ML model fills in tech stack & questions)
-// router.put("/:id", async (req, res) => {
-//   try {
-//     const { techStack, questions } = req.body;
-
-//     const updatedProject = await Project.findByIdAndUpdate(
-//       req.params.id,
-//       { techStack, questions },
-//       { new: true, runValidators: true }
-//     );
-
-//     if (!updatedProject) return res.status(404).json({ message: "Project not found" });
-
-//     res.json(updatedProject);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-// // DELETE project
-// router.delete("/:id", async (req, res) => {
-//   try {
-//     const deletedProject = await Project.findByIdAndDelete(req.params.id);
-//     if (!deletedProject) return res.status(404).json({ message: "Project not found" });
-
-//     res.json({ message: "Project deleted successfully" });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-// module.exports = router;

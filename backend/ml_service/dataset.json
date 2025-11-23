@@ -1,0 +1,98 @@
+[
+  {
+    "text": "import React from 'react'; const App = () => <div>Hello</div>; export default App;",
+    "labels": ["React", "JavaScript"]
+  },
+  {
+    "text": "const express = require('express'); const app = express(); app.listen(5000);",
+    "labels": ["Node.js", "Express"]
+  },
+  {
+    "text": "import mongoose from 'mongoose'; const userSchema = new mongoose.Schema({});",
+    "labels": ["MongoDB", "Node.js"]
+  },
+  {
+    "text": "from django.shortcuts import render; from django.http import HttpResponse",
+    "labels": ["Python", "Django"]
+  },
+  {
+    "text": "from flask import Flask; app = Flask(__name__); @app.route('/')",
+    "labels": ["Python", "Flask"]
+  },
+  {
+    "text": "class HelloWorld { public static void main(String[] args) { System.out.println('Hi'); }}",
+    "labels": ["Java"]
+  },
+  {
+    "text": "import org.springframework.boot.SpringApplication; import org.springframework.web.bind.annotation.RestController;",
+    "labels": ["Java", "Spring Boot"]
+  },
+  {
+    "text": "package com.android.example; import android.os.Bundle; public class MainActivity extends AppCompatActivity",
+    "labels": ["Android", "Kotlin/Java"]
+  },
+  {
+    "text": "import pandas as pd; import numpy as np; from sklearn.model_selection import train_test_split",
+    "labels": ["Python", "Machine Learning"]
+  },
+  {
+    "text": "<?php echo 'Hello from PHP'; ?>",
+    "labels": ["PHP"]
+  },
+  {
+    "text": "use Illuminate\\Support\\Facades\\Route; Route::get('/', function () { return view('welcome'); });",
+    "labels": ["PHP", "Laravel"]
+  },
+  {
+    "text": "#include <iostream> using namespace std; int main() { cout << 'Hello'; return 0; }",
+    "labels": ["C++"]
+  },
+  {
+    "text": "fn main() { println!(\"Hello from Rust\"); }",
+    "labels": ["Rust"]
+  },
+  {
+    "text": "package main import fmt func main() { fmt.Println('Hello Go') }",
+    "labels": ["Go"]
+  },
+  {
+    "text": "import Vue from 'vue'; new Vue({ el: '#app', data: { msg: 'Hello' } });",
+    "labels": ["Vue", "JavaScript"]
+  },
+  {
+    "text": "import { Component } from '@angular/core'; @Component({ selector: 'app-root' }) export class AppComponent {}",
+    "labels": ["Angular", "TypeScript"]
+  },
+  {
+    "text": "CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR(50));",
+    "labels": ["SQL"]
+  },
+  {
+    "text": "import torch; x = torch.tensor([1,2]); model = nn.Linear(2, 1)",
+    "labels": ["Python", "PyTorch"]
+  },
+  {
+    "text": "import tensorflow as tf; model = tf.keras.Sequential([])",
+    "labels": ["Python", "TensorFlow"]
+  },
+  {
+    "text": "const http = require('http'); const server = http.createServer((req,res)=>{})",
+    "labels": ["Node.js"]
+  },
+  {
+    "text": "import express from 'express'; import cors from 'cors'; const app = express();",
+    "labels": ["Node.js", "Express"]
+  },
+  {
+    "text": "<template><div>Hello Vue</div></template><script>export default {}</script>",
+    "labels": ["Vue"]
+  },
+  {
+    "text": "const { createApp } = require('vue'); createApp({}).mount('#app')",
+    "labels": ["Vue", "JavaScript"]
+  },
+  {
+    "text": "function add(a, b) { return a + b; } module.exports = add;",
+    "labels": ["JavaScript"]
+  }
+]

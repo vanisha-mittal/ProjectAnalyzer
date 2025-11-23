@@ -55,7 +55,7 @@ export default function ProjectUpload() {
         alert("Tech stack analysis complete! Check your console for results.");
       } else {
         console.error("❌ Upload failed:", xhr.responseText);
-        alert("Upload failed. Check console for details.");
+        alert(`Upload failed. ${xhr.responseText}`);
       }
     };
 

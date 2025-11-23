@@ -3,3 +3,6 @@ joblib
 datasets
 kaggle
 python-dotenv
+flask
+flask-cors
+

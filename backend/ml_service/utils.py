@@ -1,17 +1,26 @@
+# backend/ml/utils.py
 import os
-from pathlib import Path
 
-def read_project(path, read_chars=2000):
-    """Read a project directory and return combined text + extensions."""
+VALID_EXTENSIONS = {
+    ".js", ".jsx", ".ts", ".tsx",
+    ".py", ".java", ".c", ".cpp",
+    ".php", ".go", ".rb", ".rs",
+    ".html", ".css", ".scss", ".json",
+    ".md", ".yml", ".yaml"
+}
+
+def read_project(directory):
+    """Reads all source files from the extracted project"""
     texts = []
-    exts = []
-    for root, _, files in os.walk(path):
-        for f in files:
-            ext = Path(f).suffix.lower()
-            exts.append(ext)
-            try:
-                with open(os.path.join(root, f), 'r', encoding='utf-8', errors='ignore') as fp:
-                    texts.append(fp.read(read_chars))
-            except Exception:
-                continue
-    return "\n".join(texts) + " " + " ".join(set(exts))
+
+    for root, _, files in os.walk(directory):
+        for file in files:
+            ext = os.path.splitext(file)[1]
+            if ext.lower() in VALID_EXTENSIONS:
+                try:
+                    with open(os.path.join(root, file), "r", encoding="utf-8", errors="ignore") as f:
+                        texts.append(f.read())
+                except:
+                    pass
+
+    return "\n".join(texts)

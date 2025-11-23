@@ -1,18 +1,39 @@
-// src/components/Navbar.jsx
-import React from "react";
-import "./Navbar.css"; // Import the CSS file for styling
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./Navbar.css";
 
-function Navbar({ currentUser }) {
+function Navbar() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        if (!storedUser) return;
+
+        // Fetch full user data from backend
+        const res = await axios.get(
+          `http://localhost:8080/api/users/${storedUser._id}`,
+          { withCredentials: true }
+        );
+
+        setCurrentUser(res.data);
+      } catch (err) {
+        console.error("Error fetching user:", err);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
   return (
     <nav className="navbar fixed-top navbar-expand-lg navbar-dark custom-navbar">
       <div className="container">
-        {/* Brand */}
         <a className="navbar-brand fw-bold brand-text" href="/">
           <i className="fas fa-project-diagram me-2 brand-icon"></i>
           Project Analyzer
         </a>
 
-        {/* Mobile toggle button */}
         <button
           className="navbar-toggler"
           type="button"
@@ -22,7 +43,6 @@ function Navbar({ currentUser }) {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Links */}
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
@@ -30,27 +50,21 @@ function Navbar({ currentUser }) {
                 Home
               </a>
             </li>
-
             <li className="nav-item">
               <a className="nav-link nav-text px-3" href="/dashboard">
                 Dashboard
               </a>
-    
             </li>
-
-
             <li className="nav-item">
               <a className="nav-link nav-text px-3" href="/new">
                 Upload Project
               </a>
             </li>
-           
-              <li>
-                 <a className="nav-link nav-text px-3" href="/Questions">
-               Questions
+            <li className="nav-item">
+              <a className="nav-link nav-text px-3" href="/questions">
+                Questions
               </a>
-              </li>
-
+            </li>
             {currentUser && currentUser.role === "admin" && (
               <li className="nav-item">
                 <a className="nav-link nav-text px-3" href="/admin">
@@ -60,24 +74,20 @@ function Navbar({ currentUser }) {
             )}
           </ul>
 
-          {/* Right side */}
           <div className="navbar-nav ms-auto">
             {!currentUser ? (
               <>
                 <a href="/login" className="nav-link register-link nav-text px-3 fw-semibold">
                   Login
                 </a>
-                <a
-                  href="/signup"
-                  className="nav-link nav-text register-link px-3 fw-semibold"
-                >
+                <a href="/signup" className="nav-link nav-text register-link px-3 fw-semibold">
                   Signup
                 </a>
               </>
             ) : (
               <>
                 <span className="nav-link nav-text px-3 text-capitalize">
-                  👋 Hello {currentUser.username}
+                  Hello {currentUser.username || currentUser.name}
                 </span>
 
                 <a href="/profile" className="nav-link nav-text px-3">
@@ -87,6 +97,10 @@ function Navbar({ currentUser }) {
                 <a
                   href="/logout"
                   className="nav-link register-link px-3 fw-semibold"
+                  onClick={() => {
+                    localStorage.removeItem("user");
+                    window.location.href = "/login";
+                  }}
                 >
                   Logout
                 </a>

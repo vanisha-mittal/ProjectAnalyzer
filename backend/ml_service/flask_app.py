@@ -4,6 +4,7 @@ from flask_cors import CORS
 import joblib
 import os
 from utils import read_project
+from rules import detect_tech_stack
 
 app = Flask(__name__)
 CORS(app)
@@ -22,19 +23,16 @@ def health():
 
 @app.route("/predict/path", methods=["POST"])
 def predict_path():
-    """
-    Input JSON:
-    { "projectPath": "C:/backend/uploads/12345/extracted" }
-    """
     data = request.get_json()
+    print("📥 RAW incoming data:", data)
+
     project_path = data.get("projectPath")
+    print("📂 projectPath received:", project_path)
 
-    if not project_path:
-        return {"error": "projectPath is missing"}, 400
+    if not project_path or not os.path.exists(project_path):
+        print("❌ Invalid project path!")
+        return {"error": "Invalid path", "received": str(project_path)}, 400
 
-
-    if not os.path.exists(project_path):
-        return {"error": "Invalid path"}, 400
 
     # Read project files
     try:
@@ -52,8 +50,10 @@ def predict_path():
     except Exception as e:
         return jsonify({"error": f"Model prediction error: {str(e)}"}), 500
 
-    from rules import detect_tech_stack
     techstack = detect_tech_stack(project_path)
+    print("TEXT LENGTH:", len(code_text))
+    print("RULE OUTPUT:", techstack)
+
 
 
     return {

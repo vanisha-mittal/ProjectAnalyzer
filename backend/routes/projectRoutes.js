@@ -20,14 +20,11 @@ router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
       return res.status(400).json({ error: "No ZIP file uploaded" });
     const { projectName } = req.body;
 
-    // if (!req.user) {
-    //   return res.status(401).json({ error: "User not logged in" });
-    // }
+    if (!req.user) {
+      return res.status(401).json({ error: "User not logged in" });
+    }
 
-    // const author = req.user._id;
-
-    const author = req.body.author || "670f5e82d42a41255c20e12f";
-
+    const author = req.user._id;
 
     if (!projectName) {
       return res.status(400).json({ error: "Project name required" });

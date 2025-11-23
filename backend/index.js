@@ -44,7 +44,7 @@
   app.use(passport.session());
 
   // Passport config
-  const User = require("./models/User");
+  const User = require("./models/userSchema");
   passport.use(User.createStrategy());
   passport.serializeUser(User.serializeUser());
   passport.deserializeUser(User.deserializeUser());

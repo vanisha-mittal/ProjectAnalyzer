@@ -1,6 +1,6 @@
 // routes/userRoutes.js
 const express = require("express");
-const User = require("../models/User");
+const User = require("../models/userSchema");
 const router = express.Router();
 
 router.get("/", (req, res) => {

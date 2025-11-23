@@ -7,6 +7,7 @@ const fs = require("fs");
 const AdmZip = require("adm-zip");
 const axios = require("axios");
 const Project = require("../models/Project");
+// const User= require("../models/User");
 
 // === MULTER SETUP ===
 const upload = multer({ dest: "uploads/" });
@@ -67,6 +68,14 @@ router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
       zipFilePath: extractTo,
       techStack: techstack,
     });
+    const User = require("../models/userSchema");
+
+    await User.findByIdAndUpdate(
+      author,
+      { $push: { projectList: newProject._id } },
+      { new: true }
+    );
+
 
     return res.status(201).json({
       message: "ZIP uploaded, extracted, and ML analysis done",

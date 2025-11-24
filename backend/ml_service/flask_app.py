@@ -7,9 +7,47 @@ from rules import detect_tech_stack
 import pickle
 import torch
 from sentence_transformers import SentenceTransformer
-
+import sqlite3
+from datetime import datetime
+ 
 app = Flask(__name__)
 CORS(app)
+
+
+DB_PATH = os.path.join(os.path.dirname(__file__), "questions.db")
+
+def save_question_to_db(question, tech, difficulty):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS generated_questions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                question TEXT,
+                tech TEXT,
+                difficulty TEXT,
+                created_at TEXT
+            )
+        """)
+
+        cursor.execute("SELECT id FROM generated_questions WHERE question=?", (question,))
+        exists = cursor.fetchone()
+
+        if exists is None:
+            cursor.execute("""
+                INSERT INTO generated_questions (question, tech, difficulty, created_at)
+                VALUES (?, ?, ?, ?)
+            """, (question, ", ".join(tech), difficulty, datetime.now()))
+            conn.commit()
+            print("💾 Saved to DB")
+        else:
+            print("⚠ Already exists in DB")
+
+    except Exception as e:
+        print("❌ DB Error:", e)
+    finally:
+        conn.close()
 
 # ----------------- LOAD TECHSTACK CLASSIFICATION MODEL -----------------
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model", "techstack_model.joblib")
@@ -92,7 +130,7 @@ def predict_path():
     result = generate_question_from_code(code_text, techstack)
 
     print("❓ Generated:", result["question"])
-
+    save_question_to_db(result["question"], techstack, result["difficulty"])
     return {
         "techstack": techstack,
         "projectPath": project_path,

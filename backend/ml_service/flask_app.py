@@ -52,14 +52,11 @@ def generate_question_from_code(code_text, techstack):
 
     query_embedding = qe_model.encode(code_text, convert_to_tensor=True).cpu()
 
-    # Cosine similarity with embeddings dataset
     scores = torch.nn.functional.cosine_similarity(query_embedding, embeddings, dim=1)
 
-    # Get diverse top-10 questions
     top_k = min(10, len(df))
     top_indices = torch.topk(scores, k=top_k).indices.numpy()
 
-    # Random pick to avoid repetition
     selected = np.random.choice(top_indices)
 
     row = df.iloc[selected]

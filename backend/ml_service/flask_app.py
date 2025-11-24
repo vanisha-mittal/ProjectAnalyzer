@@ -37,7 +37,6 @@ embeddings = embeddings.cpu()
 
 print("✔ Loaded CPU embeddings:", embeddings.shape)
 
-# Load sentence transformer
 qe_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 import random
@@ -84,10 +83,12 @@ def predict_path():
 
     code_text = read_project(project_path)
 
+    # detect techstack
     techstack = detect_tech_stack(project_path)
     if not techstack:
         techstack = ["Unknown"]
 
+    # generates questions
     result = generate_question_from_code(code_text, techstack)
 
     print("❓ Generated:", result["question"])
@@ -102,3 +103,6 @@ def predict_path():
 
 if __name__ == "__main__":
     app.run(port=5000)
+
+
+# Questions related to given techstack are generated

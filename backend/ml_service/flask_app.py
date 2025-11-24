@@ -151,15 +151,33 @@ print("✔ Loaded CPU embeddings:", embeddings.shape)
 # Load sentence transformer
 qe_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-def get_question_from_techstack(techstack):
-    query_embedding = qe_model.encode(techstack, convert_to_tensor=True).cpu()
+import random
 
-    scores = torch.nn.functional.cosine_similarity(
-        query_embedding, embeddings, dim=1
-    )
+import numpy as np
 
-    top_idx = torch.argmax(scores).item()
-    return df.iloc[top_idx]["question"]
+def generate_question_from_code(code_text, techstack):
+    if not code_text:
+        code_text = " ".join(techstack)
+
+    query_embedding = qe_model.encode(code_text, convert_to_tensor=True).cpu()
+
+    # Cosine similarity with embeddings dataset
+    scores = torch.nn.functional.cosine_similarity(query_embedding, embeddings, dim=1)
+
+    # Get diverse top-10 questions
+    top_k = min(10, len(df))
+    top_indices = torch.topk(scores, k=top_k).indices.numpy()
+
+    # Random pick to avoid repetition
+    selected = np.random.choice(top_indices)
+
+    row = df.iloc[selected]
+
+    return {
+        "question": row["question"],
+        "tech": row["tech"],
+        "difficulty": row["difficulty"]
+    }
 
 # ----------------- ROUTES -----------------
 @app.route("/health", methods=["GET"])
@@ -178,17 +196,24 @@ def predict_path():
     if not project_path or not os.path.exists(project_path):
         return {"error": "Invalid path", "received": str(project_path)}, 400
 
+    # Read project files
     code_text = read_project(project_path)
-    techstack = detect_tech_stack(project_path)
-    joined_tech = " ".join(techstack)
 
-    question = get_question_from_techstack(joined_tech)
-    print("❓ Generated Question:", question)
+    # Detect tech stack
+    techstack = detect_tech_stack(project_path)
+    if not techstack:
+        techstack = ["Unknown"]
+
+    # Generate more relevant question using code
+    result = generate_question_from_code(code_text, techstack)
+
+    print("❓ Generated:", result["question"])
 
     return {
-        "techstack": list(techstack),
-        "folder": project_path,
-        "question": question
+        "techstack": techstack,
+        "projectPath": project_path,
+        "question": result["question"],
+        "difficulty": result["difficulty"]
     }, 200
 
 

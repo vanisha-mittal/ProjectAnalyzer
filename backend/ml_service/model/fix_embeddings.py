@@ -3,6 +3,8 @@ import io
 import pickle
 import torch
 
+# fix_embeddings
+
 MODEL_FOLDER = os.path.dirname(__file__)
 src_path = os.path.join(MODEL_FOLDER, "embeddings.pkl")
 dst_path = os.path.join(MODEL_FOLDER, "embeddings_cpu.pt")

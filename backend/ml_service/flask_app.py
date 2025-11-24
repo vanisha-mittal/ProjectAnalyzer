@@ -4,8 +4,6 @@ import joblib
 import os
 from utils import read_project
 from rules import detect_tech_stack
-
-# --- QUESTION GENERATION IMPORTS ---
 import pickle
 import torch
 from sentence_transformers import SentenceTransformer
@@ -84,15 +82,12 @@ def predict_path():
     if not project_path or not os.path.exists(project_path):
         return {"error": "Invalid path", "received": str(project_path)}, 400
 
-    # Read project files
     code_text = read_project(project_path)
 
-    # Detect tech stack
     techstack = detect_tech_stack(project_path)
     if not techstack:
         techstack = ["Unknown"]
 
-    # Generate more relevant question using code
     result = generate_question_from_code(code_text, techstack)
 
     print("❓ Generated:", result["question"])

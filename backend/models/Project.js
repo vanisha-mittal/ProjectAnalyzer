@@ -64,12 +64,16 @@ const projectSchema = new mongoose.Schema(
     ],
 
     // ❓ ML generated questions
+    // ❓ ML generated questions
     questions: [
       {
         question: { type: String },
+        tech: { type: [String], default: [] },
+        difficulty: { type: String },
         createdAt: { type: Date, default: Date.now },
       },
     ],
+
 
     // 🌍 Optional deployed site
     deployedLink: {

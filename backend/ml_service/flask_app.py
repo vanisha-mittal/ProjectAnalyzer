@@ -9,6 +9,8 @@ import torch
 from sentence_transformers import SentenceTransformer
 import sqlite3
 from datetime import datetime
+from bson import ObjectId
+
  
 app = Flask(__name__)
 CORS(app)
@@ -16,38 +18,49 @@ CORS(app)
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "questions.db")
 
-def save_question_to_db(question, tech, difficulty):
+from pymongo import MongoClient
+from datetime import datetime
+import os
+
+# ----------------- CONFIG -----------------
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB_NAME = "project_analyzer"
+
+client = MongoClient(MONGO_URI)
+db = client[DB_NAME]
+projects_collection = db["projects"]  # Your Project collection
+
+# ----------------- SAVE QUESTION TO PROJECT -----------------
+def save_question_to_project(project_id, question, tech, difficulty):
     try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
+        update_result = projects_collection.update_one(
+            {"_id": ObjectId(project_id)},  # <-- FIXED
+            {
+                "$push": {
+                    "questions": {
+                        "question": question,
+                        "tech": tech,
+                        "difficulty": difficulty,
+                        "createdAt": datetime.now()
+                    },
+                    "analysisLogs": {
+                        "message": f"Generated question: {question}",
+                        "createdAt": datetime.now()
+                    }
+                },
+                "$set": {"analysisStatus": "success"}
+            }
+        )
 
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS generated_questions (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                question TEXT,
-                tech TEXT,
-                difficulty TEXT,
-                created_at TEXT
-            )
-        """)
-
-        cursor.execute("SELECT id FROM generated_questions WHERE question=?", (question,))
-        exists = cursor.fetchone()
-
-        if exists is None:
-            cursor.execute("""
-                INSERT INTO generated_questions (question, tech, difficulty, created_at)
-                VALUES (?, ?, ?, ?)
-            """, (question, ", ".join(tech), difficulty, datetime.now()))
-            conn.commit()
-            print("💾 Saved to DB")
+        if update_result.matched_count:
+            print(f"💾 Saved to Project {project_id} | Question: {question}")
         else:
-            print("⚠ Already exists in DB")
+            print(f"❌ Project {project_id} not found!")
 
     except Exception as e:
         print("❌ DB Error:", e)
-    finally:
-        conn.close()
+
+
 
 # ----------------- LOAD TECHSTACK CLASSIFICATION MODEL -----------------
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model", "techstack_model.joblib")
@@ -113,6 +126,7 @@ def predict_path():
     data = request.get_json()
     print("📥 RAW incoming data:", data)
 
+    project_id = data.get("projectId")  # Pass this from frontend
     project_path = data.get("projectPath")
     print("📂 projectPath received:", project_path)
 
@@ -130,7 +144,8 @@ def predict_path():
     result = generate_question_from_code(code_text, techstack)
 
     print("❓ Generated:", result["question"])
-    save_question_to_db(result["question"], techstack, result["difficulty"])
+    save_question_to_project(project_id, result["question"], techstack, result["difficulty"])
+
     return {
         "techstack": techstack,
         "projectPath": project_path,

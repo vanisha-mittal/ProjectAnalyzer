@@ -19,18 +19,16 @@ router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
 
     if (!uploadedZip)
       return res.status(400).json({ error: "No ZIP file uploaded" });
+
     const { projectName } = req.body;
 
-    if (!req.user) {
+    if (!req.user)
       return res.status(401).json({ error: "User not logged in" });
-    }
 
     const author = req.user._id;
 
-    if (!projectName) {
+    if (!projectName)
       return res.status(400).json({ error: "Project name required" });
-    }
-
 
     console.log("📦 ZIP received:", uploadedZip.path);
 
@@ -47,40 +45,73 @@ router.post("/upload/zip", upload.single("projectZip"), async (req, res) => {
     const zip = new AdmZip(uploadedZip.path);
     zip.extractAllTo(extractTo, true);
 
-    fs.unlinkSync(uploadedZip.path); // remove original .zip
-
+    fs.unlinkSync(uploadedZip.path);
     console.log("🗂 ZIP extracted to:", extractTo);
 
-    // 2. Call FLASK ML API
-    const flaskResult = await axios.post("http://localhost:5000/predict/path", {
-      projectPath: extractTo,
-    });
-
-    const techstack = flaskResult.data.techstack;
-
-    console.log("🧠 ML Tech Stack:", techstack);
-
-    // 3. Save project in MongoDB
+    // 2. Create project FIRST
     const newProject = await Project.create({
       projectName,
       author,
       sourceType: "zip",
       zipFilePath: extractTo,
-      techStack: techstack,
+      projectPath: extractTo,
+      techStack: [],
+      analysisStatus: "pending"
     });
-    const User = require("../models/userSchema");
 
+    // 3. Add project to user
+    const User = require("../models/userSchema");
     await User.findByIdAndUpdate(
       author,
       { $push: { projectList: newProject._id } },
       { new: true }
     );
 
+    // 4. Call FLASK using newProject._id
+    console.log("📡 Sending to ML with projectId:", newProject._id);
+
+    const flaskResult = await axios.post("http://localhost:5000/predict/path", {
+      projectId: newProject._id,
+      projectPath: extractTo
+    });
+
+    const techstack = flaskResult.data.techstack;
+    console.log("🧠 ML Tech Stack:", techstack);
+
+    // 🔥 PRINT GENERATED QUESTION IN CONSOLE
+    console.log("\n================ ML QUESTION ================");
+    console.log("🧪 Tech Stack:", flaskResult.data.techstack);
+    console.log("❓ Question:", flaskResult.data.question);
+    console.log("📘 Difficulty:", flaskResult.data.difficulty);
+    console.log("============================================\n");
+
+    // 5. Update project tech stack
+    await Project.findByIdAndUpdate(
+  newProject._id,
+  {
+    techStack: techstack,
+    $push: {
+      questions: {
+        question: flaskResult.data.question,
+        tech: techstack,
+        difficulty: flaskResult.data.difficulty,
+        createdAt: new Date()
+      }
+    }
+  },
+  { new: true }
+);
+
 
     return res.status(201).json({
-      message: "ZIP uploaded, extracted, and ML analysis done",
+      message: "ZIP uploaded, extracted, and ML analysis completed",
       project: newProject,
+      techstack,
+      question: flaskResult.data.question,
+      difficulty: flaskResult.data.difficulty
     });
+
+
   } catch (err) {
     console.error("❌ ZIP Upload Error:", err);
     return res.status(500).json({ error: "ZIP upload or ML failed" });

@@ -13,6 +13,8 @@ export default function ProjectUpload() {
   const [connectionProgress, setConnectionProgress] = useState(0);
   const [projectName, setProjectName] = useState("");
   const [analysisStatus, setAnalysisStatus] = useState("");
+  const [questionData, setQuestionData] = useState(null);
+const [loading, setLoading] = useState(false);
 
   // --- Handle File Upload ---
  const handleFileUpload = (e) => {
@@ -47,17 +49,26 @@ export default function ProjectUpload() {
     };
 
     xhr.onload = () => {
-      console.log("Backend responded with status:", xhr.status);
+  console.log("Backend responded with status:", xhr.status);
 
-      if (xhr.status === 201) {
-        const res = JSON.parse(xhr.responseText);
-        console.log("✅ Upload complete:", res);
-        alert("Tech stack analysis complete! Check your console for results.");
-      } else {
-        console.error("❌ Upload failed:", xhr.responseText);
-        alert(`Upload failed. ${xhr.responseText}`);
-      }
-    };
+  if (xhr.status === 201) {
+    const res = JSON.parse(xhr.responseText);
+    console.log("✅ Upload complete:", res);
+
+    // ⬇️ SHOW QUESTION IN FRONTEND IMMEDIATELY
+    setQuestionData({
+      question: res.question,
+      difficulty: res.difficulty,
+      tech: res.techstack
+    });
+
+    alert("Tech stack analysis complete!");
+  } else {
+    console.error("❌ Upload failed:", xhr.responseText);
+    alert(`Upload failed. ${xhr.responseText}`);
+  }
+};
+
 
     xhr.onerror = () => {
       console.error("❌ Upload error.");
@@ -287,6 +298,16 @@ export default function ProjectUpload() {
           ? `Status: ${analysisStatus}`
           : "Analysis may take several minutes depending on the size and complexity of your project"}
       </p>
+      {questionData && (
+      <div className="question-display-box">
+        <h2>Generated Interview Question</h2>
+
+        <p><strong>Question:</strong> {questionData.question}</p>
+        <p><strong>Difficulty:</strong> {questionData.difficulty}</p>
+        <p><strong>Tech Stack:</strong> {Array.isArray(questionData.tech) ? questionData.tech.join(", ") : questionData.tech}</p>
+      </div>
+    )}
+
     </div>
   );
 }
